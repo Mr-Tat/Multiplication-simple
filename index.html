@@ -961,18 +961,98 @@ body.light-mode .num-key[data-key="backspace"]{
   font-size:.82rem;
 }
 
+
+/* =========================================================
+   MULTI1 v2.5
+   ========================================================= */
+
+/* Gros boutons du menu */
+.big-mode-choice{
+  min-height:72px !important;
+  font-size:1.34rem !important;
+  line-height:1.12 !important;
+  font-weight:1000 !important;
+}
+.training-choice,
+.sudden-choice{
+  font-size:1.38rem !important;
+}
+.count-choice{
+  font-size:1.42rem !important;
+}
+
+/* Entrée HARD plus longue : tout l'écran "brûle" du bas vers le haut */
+.hard-enter{
+  background:
+    linear-gradient(180deg,
+      rgba(12,2,5,.10) 0%,
+      rgba(25,3,7,.18) 38%,
+      rgba(78,10,9,.32) 72%,
+      rgba(145,35,13,.42) 100%);
+}
+.hard-enter .hard-center-badge{
+  animation-duration:2.65s !important;
+}
+.hard-enter .hard-skull{
+  animation-duration:2.45s !important;
+}
+.hard-enter .hard-flame{
+  bottom:-46vh !important;
+  filter:
+    drop-shadow(0 0 17px rgba(255,204,104,.32))
+    drop-shadow(0 0 34px rgba(255,72,31,.25));
+  animation-name:flameBurnScreen !important;
+  animation-timing-function:cubic-bezier(.18,.58,.22,1) !important;
+  animation-fill-mode:forwards !important;
+}
+@keyframes flameBurnScreen{
+  0%{
+    opacity:0;
+    transform:translateY(44vh) scale(.24) rotate(-8deg)
+  }
+  8%{opacity:.92}
+  35%{opacity:1}
+  78%{opacity:.96}
+  100%{
+    opacity:0;
+    transform:translateY(-176vh) scale(1.34) rotate(9deg)
+  }
+}
+.hard-enter::before{
+  content:"";
+  position:absolute;
+  left:-5%;
+  right:-5%;
+  bottom:-42%;
+  height:92%;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 10% 100%,rgba(255,210,101,.58),transparent 48%),
+    radial-gradient(ellipse at 35% 100%,rgba(255,98,31,.60),transparent 54%),
+    radial-gradient(ellipse at 63% 100%,rgba(255,157,45,.48),transparent 52%),
+    radial-gradient(ellipse at 90% 100%,rgba(178,18,28,.58),transparent 48%);
+  filter:blur(24px);
+  animation:burnScreenSweep 3.15s ease-out forwards;
+}
+@keyframes burnScreenSweep{
+  0%{opacity:0;transform:translateY(62vh)}
+  12%{opacity:.9}
+  66%{opacity:.86}
+  100%{opacity:0;transform:translateY(-165vh)}
+}
+
 </style>
 </head>
 <body>
 <button class="fullscreen-btn" id="fullscreenBtn" type="button">⛶ Plein écran</button>
 <button class="theme-toggle-btn" id="themeToggleBtn" type="button">☀️ Mode clair</button>
 <main class="app">
-<header><h1>Multiplication simple</h1><div class="subtitle-row"><p class="subtitle">Deux multiplications posées à la fois.</p><span class="app-version">v2.4</span></div></header>
+<header><h1>Multiplication simple</h1><div class="subtitle-row"><span class="app-version">v2.5</span></div></header>
 
 <section id="menuScreen" class="panel menu-panel">
   <div class="settings-grid">
     <section class="settings-box">
-      <h3>Réglages des reports</h3><p>Choisis la méthode utilisée en classe.</p>
+      <h3>Réglages des reports</h3><p>Choisis ta méthode de report.</p>
       <div class="method-options">
         <label class="method-option"><input type="radio" name="carryMethod" value="top" checked><span class="method-card"><span class="method-icon">↖</span><span><span class="method-name">Report au-dessus</span><span class="method-hint">La retenue est écrite au-dessus du chiffre suivant.</span></span></span></label>
         <label class="method-option"><input type="radio" name="carryMethod" value="side"><span class="method-card"><span class="method-icon">▣</span><span><span class="method-name">Report sur le côté</span><span class="method-hint">La retenue est écrite dans une case à droite du calcul.</span></span></span></label>
@@ -989,7 +1069,7 @@ body.light-mode .num-key[data-key="backspace"]{
   </div>
   <div class="menu-heading">
     <h2>Choisis ton mode</h2>
-    <p>Le même <strong>niveau</strong>, la même méthode de report et les mêmes multiplicateurs servent dans les différents modes.</p>
+    
   </div>
   <div class="mode-grid multi-mode-grid">
     <article class="mode-card settings-mode">
@@ -1000,7 +1080,7 @@ body.light-mode .num-key[data-key="backspace"]{
         <label for="trainingLevel">Niveau</label>
         <select class="native-level" id="trainingLevel"></select>
       </div>
-      <p class="shared-setting-note">Choix commun à tous les modes.</p>
+      
       <div class="sync-only" aria-hidden="true">
         <select class="native-level" id="classicLevel"></select>
         <select class="native-level" id="suddenLevel"></select>
@@ -1371,13 +1451,13 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
       : '<div class="hard-center-title">🌿 Retour au calme 🌿</div><div class="hard-center-sub">Bien joué.</div>';
     layer.appendChild(badge);
     if(type==='enter'){
-      for(let i=0;i<18;i++){
+      for(let i=0;i<30;i++){
         const f=document.createElement('i');f.className='hard-flame';
-        f.style.setProperty('--x',`${-2+i*6+Math.random()*3}%`);
-        f.style.setProperty('--w',`${65+Math.random()*85}px`);
-        f.style.setProperty('--h',`${115+Math.random()*170}px`);
-        f.style.setProperty('--delay',`${Math.random()*.18}s`);
-        f.style.setProperty('--dur',`${.82+Math.random()*.34}s`);
+        f.style.setProperty('--x',`${-3+i*3.55+Math.random()*2}%`);
+        f.style.setProperty('--w',`${85+Math.random()*115}px`);
+        f.style.setProperty('--h',`${170+Math.random()*250}px`);
+        f.style.setProperty('--delay',`${Math.random()*.42}s`);
+        f.style.setProperty('--dur',`${2.45+Math.random()*.85}s`);
         layer.appendChild(f)
       }
       const skull=document.createElement('div');skull.className='hard-skull';skull.textContent='☠';layer.appendChild(skull)
@@ -1401,7 +1481,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
         layer.appendChild(fl)
       }
     }
-    document.body.appendChild(layer);setTimeout(()=>layer.remove(),type==='enter'?1450:3050)
+    document.body.appendChild(layer);setTimeout(()=>layer.remove(),type==='enter'?3650:3050)
   }
 
   function mkInput(cls){const i=document.createElement('input');i.type='text';i.readOnly=true;i.inputMode='none';i.autocomplete='off';i.setAttribute('virtualkeyboardpolicy','manual');i.maxLength=1;i.className=cls;i.addEventListener('keydown',onKey);return i}
@@ -1447,7 +1527,8 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
     if(c<s.count-1&&s.outgoing[c]>0){
       carryMethod==='top'?focusCarry(i,c+1):focusSide(i,c+1)
     }else if(c+1<s.answerCount)focusAnswer(i,c+1);
-    updateSecondDim()
+    updateSecondDim();
+    autoAdvanceAfterCalc(i)
   }
   function setTopCarry(i,c,d){const s=states[i],inp=carryFor(i,c);if(!inp||inp.disabled)return;inp.value=d;inp.classList.remove('bad');s.carryValues[c]=d;focusAnswer(i,c)}
   function setSideCarry(i,c,d){const s=states[i],inp=sideFor(i);if(!inp||inp.disabled)return;const expected=String(s.incoming[c]);if(d===expected){s.sideCarryValues[c]=d;inp.value=d;inp.classList.remove('bad');inp.classList.add('good');setTimeout(()=>focusAnswer(i,c),100)}else{s.firstTry=false;inp.value=d;inp.classList.add('bad');const h=inp.parentElement.querySelector('.side-carry-history');if(h)h.textContent=`✕ ${d}`;setTimeout(()=>{if(active.kind==='side'&&active.calc===i&&active.col===c){inp.value='';inp.classList.remove('bad');inp.focus({preventScroll:true})}},420)}}
@@ -1458,39 +1539,81 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
   function evaluate(i){const s=states[i],exp=expectedDigits(s);let filled=true,correct=true;for(let c=0;c<s.answerCount;c++){if(s.answerValues[c]==='')filled=false;if(s.answerValues[c]!==exp[c])correct=false}for(let c=1;c<s.count;c++){const e=s.incoming[c]>0?String(s.incoming[c]):'';if(carryMethod==='top'){const raw=s.carryValues[c],act=(e===''&&raw==='0')?'':raw;if(e!==''&&act==='')filled=false;if(act!==e)correct=false}else if(e!==''&&s.sideCarryValues[c]!==e){filled=false;correct=false}}return{filled,correct}}
   function markErrors(i){const s=states[i],exp=expectedDigits(s);s.firstTry=false;for(let c=0;c<s.answerCount;c++){const inp=answerFor(i,c);if(s.answerValues[c]!==exp[c]){if(s.answerValues[c]!=='')s.wrongHistory[c]=s.answerValues[c];const wh=opFor(i)?.querySelector(`[data-wrong="${c}"]`);if(wh)wh.textContent=s.wrongHistory[c];s.answerValues[c]='';if(inp){inp.value='';inp.classList.add('incorrect')}}}if(carryMethod==='top'){for(let c=1;c<s.count;c++){const e=s.incoming[c]>0?String(s.incoming[c]):'',raw=s.carryValues[c],act=(e===''&&raw==='0')?'':raw;if(act!==e){const inp=carryFor(i,c),wh=opFor(i)?.querySelector(`[data-carry-wrong="${c}"]`);if(raw!=='')s.carryWrong[c]=raw;if(wh)wh.textContent=s.carryWrong[c];s.carryValues[c]='';if(inp){inp.value='';inp.classList.add('bad')}}}}}
   function lockCalc(i){const s=states[i];s.solved=true;const box=calculationsPair.querySelector(`.calc-box[data-calc="${i}"]`);box.querySelectorAll('input').forEach(x=>{x.disabled=true;x.classList.remove('incorrect','bad','active-entry');if(x.value)x.classList.add('correct','good')});status(i,'Correct','ok');updateSecondDim()}
+  function firstTargetInCalc(i){
+    const s=states[i];
+    if(!s||s.solved)return null;
+    for(let c=0;c<s.answerCount;c++){
+      if(s.answerValues[c]==='')return{kind:'answer',i,c}
+    }
+    for(let c=1;c<s.count;c++){
+      const expected=s.incoming[c]>0?String(s.incoming[c]):'';
+      if(carryMethod==='top'&&expected!==''&&s.carryValues[c]!==expected){
+        return{kind:'carry',i,c}
+      }
+      if(carryMethod==='side'&&expected!==''&&s.sideCarryValues[c]!==expected){
+        return{kind:'side',i,c}
+      }
+    }
+    return null
+  }
+  function calcFilled(i){
+    return !!states[i]&&evaluate(i).filled
+  }
+  function autoAdvanceAfterCalc(i){
+    if(i!==0||states[0].solved||!calcFilled(0)||states[1].solved)return;
+    const target=firstTargetInCalc(1);
+    if(!target)return;
+    setFeedback('Calcul 1 terminé. Passe au calcul 2, ou appuie sur Valider pour vérifier le calcul 1.','info');
+    requestAnimationFrame(()=>focusTarget(target))
+  }
   function firstTarget(){for(let i=0;i<2;i++){if(states[i].solved)continue;const s=states[i];for(let c=0;c<s.answerCount;c++)if(s.answerValues[c]==='')return{kind:'answer',i,c};for(let c=1;c<s.count;c++){const e=s.incoming[c]>0?String(s.incoming[c]):'';if(carryMethod==='top'&&e!==''&&s.carryValues[c]!==e)return{kind:'carry',i,c};if(carryMethod==='side'&&e!==''&&s.sideCarryValues[c]!==e)return{kind:'side',i,c}}}return null}
   function focusTarget(t){if(!t)return;t.kind==='answer'?focusAnswer(t.i,t.c):t.kind==='carry'?focusCarry(t.i,t.c):focusSide(t.i,t.c)}
   function verifyPair(){
-    const pageWasFirstTry=states.every(s=>s.firstTry&&!s.solved);
     const ev=states.map((s,i)=>s.solved?{filled:true,correct:true}:evaluate(i));
-    const bothFinished=(states[0].solved||ev[0].filled)&&(states[1].solved||ev[1].filled);
-
-    if(!bothFinished){
-      setFeedback('Termine les deux calculs avant de vérifier.','info');
-      focusTarget(firstTarget());
-      return
-    }
+    const firstReady=!states[0].solved&&ev[0].filled;
+    const secondReady=!states[1].solved&&ev[1].filled;
+    const bothReady=(states[0].solved||ev[0].filled)&&(states[1].solved||ev[1].filled);
 
     const candidates=[];
-    for(let i=0;i<2;i++)if(!states[i].solved)candidates.push(i);
-    if(!candidates.length)return;
+    if(firstReady)candidates.push(0);
+    if(secondReady&&(states[0].solved||bothReady))candidates.push(1);
+
+    if(!candidates.length){
+      if(!states[0].solved&&!ev[0].filled){
+        setFeedback('Termine le calcul 1 avant de le vérifier.','info');
+        focusTarget(firstTargetInCalc(0)||firstTarget())
+      }else{
+        setFeedback('Termine le calcul 2 avant de le vérifier.','info');
+        focusTarget(firstTargetInCalc(1)||firstTarget())
+      }
+      return
+    }
 
     if(session.mode==='sudden'){
       let newly=0;
       for(const i of candidates){
         if(ev[i].correct){
-          lockCalc(i);session.score++;session.completed++;newly++
+          lockCalc(i);
+          session.score++;
+          session.completed++;
+          newly++
         }else{
-          markErrors(i);endSudden(i);return
+          markErrors(i);
+          endSudden(i);
+          return
         }
       }
+      updateBar();
       if(states.every(s=>s.solved)){
         phase='review';
         primaryBtn.textContent='Calculs suivants';
         setFeedback(`Parfait : +${newly}. Score : ${session.score}.`,'ok');
-        if(pageWasFirstTry)showCorrectCelebration()
+        showCorrectCelebration()
+      }else{
+        setFeedback('Calcul 1 correct. Continue avec le calcul 2.','ok');
+        focusTarget(firstTargetInCalc(1)||firstTarget())
       }
-      updateBar();return
+      return
     }
 
     let hadWrong=false;
@@ -1501,11 +1624,13 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
         if(session.mode==='classic')session.score+=point;
         session.completed++
       }else{
-        markErrors(i);hadWrong=true
+        markErrors(i);
+        hadWrong=true
       }
     }
 
     updateBar();
+
     if(states.every(s=>s.solved)){
       if(session.mode==='classic'&&session.completed>=session.total){
         finishClassic()
@@ -1513,11 +1638,14 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
         phase='review';
         primaryBtn.textContent=session.mode==='training'?'Nouveaux calculs':'Calculs suivants';
         setFeedback('Les deux calculs sont terminés.','ok');
-        if(pageWasFirstTry)showCorrectCelebration()
+        showCorrectCelebration()
       }
-    }else{
-      setFeedback(hadWrong?'Corrige les cases indiquées, puis vérifie à nouveau.':'Termine les deux calculs avant de continuer.',hadWrong?'bad':'info');
+    }else if(hadWrong){
+      setFeedback('Corrige les cases indiquées, puis vérifie à nouveau.','bad');
       focusTarget(firstTarget())
+    }else{
+      setFeedback('Calcul 1 correct. Continue avec le calcul 2.','ok');
+      focusTarget(firstTargetInCalc(1)||firstTarget())
     }
   }
   function endSudden(i){
