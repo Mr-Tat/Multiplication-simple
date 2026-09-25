@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Multiplication simple</title>
+<style>
+:root{
+  --bg:#07101d;--bg2:#0d1730;--panel:rgba(10,21,39,.82);--card:rgba(11,25,46,.80);
+  --line:rgba(132,185,255,.20);--text:#eef6ff;--muted:#a9b8cf;--blue:#4da3ff;--blue2:#77c8ff;
+  --gold:#ffd166;--green:#54d98c;--red:#ff7586;--cell:52px;--count-ruler-space:0px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-rounded,"Segoe UI",system-ui,sans-serif;color:var(--text);background:#07101d}
+body{
+  min-height:100vh;overflow-x:hidden;
+  background:
+    radial-gradient(circle at 16% 12%,rgba(77,163,255,.18),transparent 26%),
+    radial-gradient(circle at 83% 18%,rgba(255,209,102,.10),transparent 23%),
+    radial-gradient(circle at 72% 82%,rgba(67,220,190,.08),transparent 27%),
+    linear-gradient(135deg,#07101d 0%,#0a1326 44%,#10172c 100%);
+}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;background-image:linear-gradient(115deg,transparent 0 47%,rgba(255,255,255,.025) 48%,transparent 49%),radial-gradient(circle at 30% 40%,rgba(255,255,255,.06) 0 1px,transparent 1.5px);background-size:190px 190px,70px 70px}
+button,input,select{font:inherit}.hidden{display:none!important}
+button{touch-action:manipulation}.app{width:min(1440px,calc(100% - 24px));margin:0 auto;padding:26px 0 70px}
+header{text-align:center;margin-bottom:18px;position:relative}
+h1{margin:0;font-size:clamp(2rem,4vw,3.35rem);letter-spacing:-.04em;text-shadow:0 6px 30px rgba(77,163,255,.24)}
+.subtitle-row{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px}.subtitle{margin:0;color:var(--muted);font-weight:700}.app-version{padding:3px 9px;border-radius:999px;font-size:.74rem;font-weight:950;color:#d9edff;background:rgba(77,163,255,.16);border:1px solid rgba(119,200,255,.35)}
+.fullscreen-btn,.theme-toggle-btn{position:fixed;right:12px;z-index:1200;border:1px solid rgba(255,255,255,.15);background:rgba(7,16,29,.88);color:#eaf5ff;border-radius:14px;padding:10px 13px;font-weight:900;cursor:pointer;backdrop-filter:blur(10px)}.fullscreen-btn{top:10px}.theme-toggle-btn{top:56px}
+.panel,.card{border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,rgba(10,23,44,.84),rgba(7,17,32,.82));box-shadow:0 18px 50px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.035);backdrop-filter:blur(10px)}
+.menu-panel{padding:24px}.menu-heading{text-align:center;margin:4px 0 18px}.menu-heading h2{margin:0 0 4px;font-size:1.6rem}.menu-heading p{margin:0;color:var(--muted)}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}.settings-box{padding:18px;border-radius:20px;border:1px solid rgba(77,163,255,.20);background:rgba(14,30,54,.62)}.settings-box h3{margin:0 0 5px}.settings-box p{margin:0 0 12px;color:var(--muted);font-size:.92rem}
+.method-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.method-option{position:relative;display:block;cursor:pointer}.method-option input{position:absolute;opacity:0;pointer-events:none}.method-card{display:flex;gap:10px;align-items:center;min-height:80px;padding:12px;border-radius:15px;border:2px solid rgba(119,200,255,.18);background:rgba(4,12,25,.58);transition:.15s}.method-option input:checked+.method-card{border-color:var(--blue);box-shadow:0 0 0 4px rgba(77,163,255,.12),0 0 18px rgba(77,163,255,.15);background:rgba(20,55,94,.55)}.method-icon{font-size:1.6rem}.method-name{font-weight:950}.method-hint{display:block;color:var(--muted);font-size:.79rem;margin-top:2px}
+.multiplier-picker{display:flex;flex-wrap:wrap;gap:8px}.mult-chip{min-width:46px;height:42px;border-radius:12px;border:1px solid rgba(119,200,255,.24);background:rgba(6,18,34,.75);color:#dceeff;font-weight:950;cursor:pointer}.mult-chip.active{background:linear-gradient(180deg,#2877c7,#185999);border-color:#7ac8ff;color:#fff;box-shadow:0 0 0 3px rgba(77,163,255,.13)}.mult-chip.all{min-width:88px}.mult-hint{margin-top:9px!important;font-size:.8rem!important}
+.mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.mode-card{position:relative;padding:20px;border-radius:22px;border:1px solid rgba(255,255,255,.11);background:linear-gradient(180deg,rgba(15,31,57,.86),rgba(8,20,38,.82));overflow:visible}.mode-card::after{content:"";position:absolute;inset:auto -30px -55px auto;width:120px;height:120px;border-radius:50%;background:rgba(77,163,255,.08);filter:blur(2px);pointer-events:none}.mode-icon{font-size:2rem}.mode-title{margin:7px 0 6px;font-size:1.25rem}.mode-description{min-height:58px;margin:0 0 14px;color:var(--muted);font-size:.92rem}.mode-settings{display:grid;gap:8px}.mode-settings label,.classic-count-wrap>label{font-size:.83rem;font-weight:900;color:#c6d5ea}.native-level{width:100%}.btn{border:0;border-radius:14px;padding:12px 15px;font-weight:950;cursor:pointer;color:white}.btn-primary{background:linear-gradient(180deg,#2d8de9,#1762ad)}.btn-training{background:linear-gradient(180deg,#2a8d68,#1e654c)}.btn-gold{background:linear-gradient(180deg,#d89028,#a96211)}.btn-secondary{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#eaf4ff}.btn-success{background:linear-gradient(180deg,#2d9b69,#1d704b)}.btn-hint{background:linear-gradient(180deg,#6a5bb7,#493b8c)}
+.classic-count-picker{display:flex;gap:7px;margin:6px 0 10px}.classic-count-btn{flex:1;border-radius:10px;padding:8px;border:1px solid rgba(255,255,255,.14);background:rgba(4,12,24,.58);color:#cfe1f7;font-weight:850;cursor:pointer}.classic-count-btn.active{background:#215f9e;border-color:#69b7ff;color:#fff}.score-memory{margin:8px 0;padding:7px 9px;border-radius:10px;background:rgba(255,255,255,.06);font-size:.82rem;font-weight:850;color:#cbdcf2}
+.slide-select-wrap{position:relative}.slide-select-native{position:absolute!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important}.slide-select-button{width:100%;padding:11px 38px 11px 12px;border-radius:12px;border:1px solid rgba(119,200,255,.28);background:rgba(4,14,29,.82);color:#eaf5ff;font-weight:900;text-align:left;cursor:pointer;position:relative}.slide-select-button::after{content:"⌄";position:absolute;right:13px;font-size:1.2rem}.slide-select-menu{position:absolute;z-index:500;left:0;right:0;padding:6px;border-radius:13px;border:1px solid rgba(119,200,255,.35);background:#091426;box-shadow:0 18px 40px rgba(0,0,0,.42);overflow-y:auto}.slide-select-wrap.open-up .slide-select-menu{bottom:calc(100% + 6px)}.slide-option{display:block;width:100%;padding:10px;border:0;border-radius:9px;background:transparent;color:#e7f3ff;text-align:left;font-weight:850;cursor:pointer}.slide-option:hover,.slide-option.selected{background:rgba(77,163,255,.16)}.hard-scroll-buffer{height:44px}.hard-option{margin-top:3px;background:rgba(125,26,46,.30);color:#ffd9df}.hard-option::before{content:"⚠ ";}
+.session-bar{display:grid;grid-template-columns:1fr auto auto auto auto auto;gap:10px;align-items:center;padding:12px 14px;margin-bottom:14px}.session-mode{font-size:1.07rem;font-weight:950}.session-pill{padding:9px 13px;border-radius:13px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);font-weight:950;white-space:nowrap}.session-level-pill{border-color:rgba(77,163,255,.50);background:rgba(32,81,131,.32)}#sessionScore{font-size:1.3rem;position:relative}.sun-score{isolation:isolate;border-color:#ffd166!important;background:rgba(102,72,9,.40)!important;box-shadow:0 0 0 3px rgba(255,209,102,.11),0 0 22px rgba(255,209,102,.16)!important}.sun-score::before{content:"";position:absolute;inset:-12px;border-radius:20px;background:repeating-conic-gradient(from 0deg,#ffd166 0deg 5deg,transparent 5deg 14deg);-webkit-mask:radial-gradient(ellipse at center,transparent 0 62%,#000 64% 100%);mask:radial-gradient(ellipse at center,transparent 0 62%,#000 64% 100%);pointer-events:none;opacity:.75;z-index:-1}
+.card{padding:18px}.instruction{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;padding:12px 14px;border-radius:15px;background:rgba(77,163,255,.08);border:1px solid rgba(77,163,255,.15);color:#cddcf1}.main-workspace{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 224px;gap:16px;align-items:start}.pair-scroll{overflow-x:auto;scroll-behavior:smooth;padding:7px 3px 17px}.calculations-pair{display:flex;gap:22px;min-width:max-content}.calc-box{min-width:350px;padding:15px;border-radius:20px;border:1px solid rgba(255,255,255,.10);background:rgba(6,16,31,.72);transition:.2s}.calc-box.waiting-for-first{opacity:.35;filter:saturate(.55)}.calc-label{font-weight:950;color:#87caff;margin-bottom:8px}.calc-operation-wrap{display:flex;align-items:center;justify-content:center;gap:14px}.operation{--cols:5;display:grid;grid-template-columns:34px repeat(var(--cols),var(--cell));grid-auto-rows:auto;column-gap:5px;row-gap:4px;align-items:center;justify-content:center;min-width:max-content}.op-empty{min-height:1px}.carry-wrap,.answer-wrap{display:flex;flex-direction:column;align-items:center;min-width:var(--cell)}.carry-input{width:34px;height:28px;border-radius:8px;border:2px solid rgba(255,209,102,.45);background:rgba(78,55,10,.25);color:#ffe7a6;text-align:center;font-weight:950;outline:none}.answer-input{width:var(--cell);height:52px;border-radius:11px;border:2px solid rgba(119,200,255,.28);background:rgba(3,11,23,.88);color:#fff;text-align:center;font-size:1.65rem;font-weight:950;outline:none}.answer-input.active-entry,.carry-input.active-entry,.side-carry-input.active-entry{border-color:#5bb6ff!important;box-shadow:0 0 0 5px rgba(77,163,255,.16),0 0 20px rgba(77,163,255,.16)!important}.answer-input.correct,.carry-input.good,.side-carry-input.good{border-color:#54d98c!important;background:rgba(24,88,57,.42)!important}.answer-input.incorrect,.carry-input.bad,.side-carry-input.bad{border-color:#ff7586!important;background:rgba(107,27,42,.42)!important}.digit{min-width:var(--cell);text-align:center;font-size:1.9rem;font-weight:950}.operator{text-align:center;font-size:2rem;font-weight:950;color:#ffd166}.bar{grid-column:1/-1;height:3px;border-radius:99px;background:#7f96b2;margin:3px 0 4px}.wrong-history,.carry-wrong{min-height:14px;color:#ff8e9c;font-size:.68rem;font-weight:900;text-align:center}.side-carry-panel{width:76px;flex:0 0 76px;display:flex;flex-direction:column;align-items:center;gap:6px}.side-carry-panel.hidden-side{display:none}.side-carry-label{font-size:.74rem;color:#9fb2cb;font-weight:900}.side-carry-input{width:62px;height:56px;border-radius:12px;border:2px solid rgba(255,209,102,.48);background:rgba(78,55,10,.28);color:#ffe7a6;text-align:center;font-size:1.8rem;font-weight:1000;outline:none}.side-carry-history{min-height:16px;color:#ff96a2;font-size:.72rem;font-weight:900}.calc-status{min-height:23px;margin-top:8px;text-align:center;font-weight:900}.calc-status.ok{color:#76e5a5}.calc-status.bad{color:#ff8d9a}
+.group-sep{margin-right:13px}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;border-radius:19px;border:1px solid rgba(255,255,255,.10);background:rgba(5,14,27,.72);position:sticky;top:10px}.numpad-title{grid-column:1/-1;margin:0 0 2px;text-align:center;color:#aebed2;font-weight:900}.num-key{height:52px;border:1px solid rgba(119,200,255,.20);border-radius:12px;background:rgba(21,43,72,.78);color:#f4f9ff;font-size:1.25rem;font-weight:950;cursor:pointer}.num-key.action{background:#7b2938}.num-key.check{background:#1f7650}.primary-text-key{display:none}.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px}.feedback{min-height:46px;margin-top:12px;padding:11px 13px;border-radius:14px;background:rgba(255,255,255,.05);color:#cbd8ea;text-align:center;font-weight:850}.feedback.ok{color:#84e9ad}.feedback.bad{color:#ff9aa5}.feedback.info{color:#8bc8ff}
+/* tables helper */
+.tables-panel{position:fixed;left:8px;top:50%;transform:translateY(-50%);z-index:950;width:190px;max-height:calc(100vh - 18px);padding:11px;border-radius:18px;border:1px solid rgba(119,200,255,.30);background:rgba(7,17,31,.96);box-shadow:0 18px 44px rgba(0,0,0,.38)}.tables-panel-title{text-align:center;font-weight:1000;margin-bottom:8px}.table-picker{width:100%;padding:9px;border-radius:10px;border:1px solid rgba(119,200,255,.28);background:#0d213b;color:#edf7ff;font-weight:900;margin-bottom:8px}.table-list{display:grid;gap:3px}.table-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:5px;padding:3px 7px;border-radius:8px;color:#eaf5ff;font-size:1rem;font-weight:900}.table-row:nth-child(5n){background:rgba(77,163,255,.07)}.table-eq{text-align:center;color:#8bc8ff}.table-result{text-align:right;color:#ffd166}.tables-used-note{margin-top:8px;text-align:center;color:#9fb1c8;font-size:.7rem;font-weight:800}.tables-open #gameScreen{margin-left:208px;width:calc(100% - 208px);transition:.22s}
+.pair-scroll-arrow{position:absolute;z-index:80;width:76px;height:76px;display:flex;align-items:center;justify-content:center;border-radius:999px;border:2px solid rgba(255,255,255,.3);background:rgba(0,0,0,.72);color:#fff;font-size:4.25rem;font-weight:1000;line-height:.7;padding-bottom:8px;box-shadow:0 10px 30px rgba(0,0,0,.35);cursor:pointer;animation:arrowPulse 1.05s ease-in-out infinite}.pair-scroll-arrow.hidden{display:none}@keyframes arrowPulse{0%,100%{opacity:.58;transform:translateX(0) scale(1)}50%{opacity:1;transform:translateX(6px) scale(1.05)}}
+/* hard */
+.hard-shell{padding:20px}.hard-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.hard-title{font-size:1.65rem;font-weight:1000}.hard-back{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:#fff;border-radius:12px;padding:10px 12px;font-weight:900;cursor:pointer}.hard-level-grid{display:grid;grid-template-columns:repeat(3,minmax(230px,1fr));gap:14px}.hard-level-card{padding:20px;border-radius:22px;border:2px solid rgba(227,80,104,.44);background:linear-gradient(180deg,rgba(105,24,41,.76),rgba(47,12,23,.86));box-shadow:0 14px 32px rgba(0,0,0,.22)}.hard-level-card h3{font-size:1.35rem;margin:0 0 5px}.hard-spec{color:#ffd8de;font-weight:850}.hard-record{display:flex;align-items:center;gap:12px;margin:12px 0}.hard-record-label{font-size:.8rem;font-weight:900;color:#e7adb6}.hard-record-value{min-width:88px;height:72px;display:flex;align-items:center;justify-content:center;border-radius:15px;border:2px solid #d95b70;background:#61182a;color:#fff;font-size:3.2rem;font-weight:1000}.hard-actions{display:grid;gap:9px}.hard-train,.hard-sudden{border:1px solid rgba(255,255,255,.14);border-radius:13px;padding:13px;color:#fff;font-weight:950;cursor:pointer}.hard-train{background:#286348}.hard-sudden{background:#9c213a}.hard-game{padding:16px}.hard-session-bar{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:13px 15px;border-radius:20px;border:1px solid rgba(236,96,119,.30);background:rgba(67,13,27,.62)}.hard-session-title{font-size:1.25rem;font-weight:1000}.hard-session-meta{color:#e6b6bf;font-weight:800;font-size:.88rem}.hard-session-stats{display:flex;gap:10px;align-items:center}.hard-session-score{min-width:170px;padding:9px 16px;border-radius:17px;text-align:center;border:2px solid rgba(251,113,133,.55);background:rgba(117,24,42,.55);font-size:clamp(3.4rem,6vw,5.6rem);font-weight:1000;line-height:.95;position:relative}.hard-session-score.no-score{min-width:auto;font-size:1rem;padding:10px 13px}.hard-session-counter{padding:10px 14px;border-radius:13px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);font-size:1.25rem;font-weight:1000}.hard-calc-label{text-align:center;margin:13px 0 7px;font-size:1.15rem;font-weight:1000}.hard-operation-area{overflow-x:auto;padding:8px}.hard-calc-card{width:max-content;min-width:420px;margin:0 auto;padding:20px;border-radius:22px;border:1px solid rgba(255,255,255,.12);background:rgba(22,8,15,.52)}.hard-operation{--cols:10;display:grid;grid-template-columns:34px repeat(var(--cols),48px);gap:4px;align-items:center;justify-content:center}.hard-digit{font-size:1.75rem;font-weight:1000;text-align:center}.hard-answer{width:46px;height:48px;border-radius:10px;border:2px solid rgba(244,112,134,.28);background:#160a0e;color:#fff;text-align:center;font-size:1.45rem;font-weight:1000}.hard-carry{width:32px;height:27px;border-radius:7px;border:2px solid rgba(255,209,102,.45);background:rgba(80,55,8,.26);color:#ffe5a0;text-align:center;font-weight:1000}.hard-side-carry{width:64px;height:56px;border-radius:12px;border:2px solid #e2a83b;background:rgba(82,55,8,.32);color:#fff0b5;text-align:center;font-size:1.8rem;font-weight:1000}.hard-active{box-shadow:0 0 0 5px rgba(244,112,134,.18)!important;border-color:#ff7f93!important}.hard-good{border-color:#55d58b!important;background:rgba(30,92,57,.4)!important}.hard-bad{border-color:#ff7f93!important;background:rgba(116,24,42,.45)!important}.hard-bar{grid-column:1/-1;height:3px;background:#b17b85;border-radius:999px}.hard-operator{font-size:2rem;color:#ffb6c2;font-weight:1000;text-align:center}.hard-controls{display:flex;justify-content:center;gap:10px;margin-top:12px}.hard-feedback{min-height:44px;margin-top:10px;text-align:center;color:#e8bac2;font-weight:900}.hard-numpad{width:min(330px,100%);margin:14px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.hard-key{height:50px;border-radius:11px;border:1px solid rgba(255,255,255,.14);background:#4b1823;color:#fff;font-size:1.18rem;font-weight:1000}.hard-key.back{background:#7a2638}.hard-key.check{background:#31684c}
+.last-work-card{margin-top:18px;padding:15px;border-radius:18px;border:1px solid rgba(77,163,255,.20);background:rgba(8,20,37,.72)}.last-work-title{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:#8ca3be;font-weight:900}.last-work-main{font-size:1.05rem;font-weight:950;margin-top:4px;display:inline-block;position:relative}.last-work-sub{font-size:.78rem;color:#8fa3bb;margin-top:3px}.last-work-main.sun-score{padding:8px 12px;border-radius:12px}
+body.light-mode{--text:#17283d;--muted:#5b6f88;background:linear-gradient(135deg,#eef6ff,#fbfcff 45%,#f2f8ff)}body.light-mode::before{opacity:.12}.light-mode .panel,.light-mode .card{background:rgba(255,255,255,.88);border-color:#d5e2ef}.light-mode .settings-box,.light-mode .mode-card,.light-mode .calc-box,.light-mode .numpad{background:rgba(248,251,255,.93);border-color:#d6e3f0}.light-mode .answer-input{background:#fff;color:#1a3049;border-color:#b9cde0}.light-mode .digit{color:#17283d}.light-mode .slide-select-button{background:#fff;color:#1c3551;border-color:#bfd3e6}.light-mode .slide-select-menu{background:#fff;border-color:#bfd3e6}.light-mode .slide-option{color:#1c3551}.light-mode .table-picker{background:#fff;color:#17314c}.light-mode .tables-panel{background:rgba(250,253,255,.98);color:#1a3049}.light-mode .table-row{color:#1a3049}.light-mode .num-key{background:#eef5fc;color:#1b3550}.light-mode .session-pill{background:#f5f9fd;border-color:#d1deea;color:#24405e}.light-mode .fullscreen-btn,.light-mode .theme-toggle-btn{background:#fff;color:#1b3550;border-color:#cbd9e6}
+@media(max-width:1020px){.mode-grid{grid-template-columns:1fr}.settings-grid{grid-template-columns:1fr}.mode-description{min-height:0}.main-workspace{grid-template-columns:1fr}.numpad{position:static;width:min(360px,100%);margin:0 auto}.hard-level-grid{grid-template-columns:1fr}.session-bar{grid-template-columns:1fr auto auto}.session-bar .score-ruler-btn,.session-bar .menu-btn{grid-row:2}.tables-open #gameScreen{margin-left:0;width:100%}.tables-panel{width:172px}.calc-box{min-width:330px}}
+@media(max-width:620px){:root{--cell:46px}.app{width:min(100% - 12px,1440px);padding-top:68px}.menu-panel,.card{padding:12px}.method-options{grid-template-columns:1fr}.session-bar{grid-template-columns:1fr 1fr}.session-mode{grid-column:1/-1}.session-pill{font-size:.82rem}.calc-box{min-width:305px;padding:10px}.operation{grid-template-columns:28px repeat(var(--cols),var(--cell));gap:3px}.digit{font-size:1.55rem}.answer-input{height:47px;font-size:1.45rem}.tables-panel{left:4px;width:160px}.hard-session-bar{grid-template-columns:1fr}.hard-session-stats{justify-content:flex-start}.hard-calc-card{min-width:360px}.hard-operation{grid-template-columns:30px repeat(var(--cols),44px)}}
+
+/* =========================================================
+   MULTI1 v2.1 — identité visuelle turquoise, alignée sur les
+   autres applications de calcul écrit
+   ========================================================= */
+:root{
+  --bg:#071716 !important;
+  --bg2:#0b2424 !important;
+  --panel:rgba(10,31,31,.86) !important;
+  --card:rgba(10,28,30,.84) !important;
+  --line:rgba(94,234,212,.24) !important;
+  --text:#effffc !important;
+  --muted:#a8c9c5 !important;
+  --blue:#2dd4bf !important;
+  --blue2:#67e8f9 !important;
+  --gold:#f8d66d !important;
+  --green:#4ade80 !important;
+  --red:#fb7185 !important;
+}
+body{
+  background:
+    radial-gradient(circle at 7% 8%,rgba(20,184,166,.24),transparent 27rem),
+    radial-gradient(circle at 88% 12%,rgba(34,211,238,.15),transparent 24rem),
+    radial-gradient(circle at 75% 88%,rgba(45,212,191,.10),transparent 30rem),
+    linear-gradient(145deg,#061312 0%,#0a1f20 48%,#0b1822 100%) !important;
+}
+body::before{
+  opacity:.34 !important;
+  background-image:
+    radial-gradient(circle at 18% 24%,rgba(94,234,212,.17) 0 2px,transparent 2.8px),
+    radial-gradient(circle at 72% 60%,rgba(103,232,249,.10) 0 1.5px,transparent 2.4px),
+    linear-gradient(118deg,transparent 0 46%,rgba(94,234,212,.034) 47%,transparent 48%) !important;
+  background-size:90px 90px,125px 125px,220px 220px !important;
+}
+h1{
+  color:#f1fffd !important;
+  text-shadow:0 0 28px rgba(45,212,191,.24),0 8px 30px rgba(0,0,0,.32) !important;
+}
+.app-version{
+  color:#cffff8 !important;
+  background:rgba(20,184,166,.16) !important;
+  border-color:rgba(94,234,212,.38) !important;
+}
+
+/* Surfaces riches, proches des autres applis */
+.panel,.card{
+  position:relative !important;
+  overflow:hidden !important;
+  background:
+    radial-gradient(circle at 93% 4%,rgba(45,212,191,.075),transparent 15rem),
+    linear-gradient(180deg,rgba(12,37,38,.94),rgba(7,24,27,.92)) !important;
+  border:1px solid rgba(94,234,212,.20) !important;
+  box-shadow:
+    0 20px 55px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 0 34px rgba(20,184,166,.035) !important;
+}
+.menu-panel::before,
+.card::before{
+  content:"";
+  position:absolute;
+  width:250px;
+  height:250px;
+  right:-95px;
+  top:-105px;
+  border-radius:999px;
+  border:1px solid rgba(94,234,212,.10);
+  box-shadow:
+    0 0 0 24px rgba(45,212,191,.025),
+    0 0 0 54px rgba(34,211,238,.018);
+  pointer-events:none;
+}
+.menu-panel::after,
+.card::after{
+  content:"";
+  position:absolute;
+  left:-80px;
+  bottom:-95px;
+  width:240px;
+  height:180px;
+  background:
+    linear-gradient(118deg,transparent 0 43%,rgba(94,234,212,.055) 44% 45%,transparent 46%),
+    linear-gradient(62deg,transparent 0 58%,rgba(34,211,238,.035) 59% 60%,transparent 61%);
+  transform:rotate(-7deg);
+  pointer-events:none;
+}
+
+/* Réglages */
+.settings-box{
+  position:relative !important;
+  overflow:hidden !important;
+  background:
+    radial-gradient(circle at 100% 0,rgba(45,212,191,.10),transparent 9rem),
+    linear-gradient(180deg,rgba(14,45,45,.78),rgba(8,29,31,.80)) !important;
+  border:1px solid rgba(94,234,212,.22) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+.settings-box h3{color:#e9fffb !important}
+.method-card{
+  background:rgba(5,22,24,.72) !important;
+  border-color:rgba(94,234,212,.18) !important;
+}
+.method-option input:checked+.method-card{
+  border-color:#2dd4bf !important;
+  background:rgba(13,73,70,.58) !important;
+  box-shadow:
+    0 0 0 4px rgba(45,212,191,.11),
+    0 0 22px rgba(45,212,191,.12) !important;
+}
+.method-icon{color:#67e8f9 !important}
+
+/* Multiplicateurs */
+.multiplier-picker{
+  gap:9px !important;
+}
+.mult-chip{
+  border-color:rgba(94,234,212,.22) !important;
+  background:rgba(5,24,25,.82) !important;
+  color:#d9fffa !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+.mult-chip:hover{
+  border-color:rgba(94,234,212,.48) !important;
+}
+.mult-chip.active{
+  background:linear-gradient(180deg,#19b7a4,#0f8178) !important;
+  border-color:#67e8d7 !important;
+  color:#fff !important;
+  box-shadow:
+    0 0 0 3px rgba(45,212,191,.12),
+    0 0 18px rgba(45,212,191,.13) !important;
+}
+.mult-chip.all.active{
+  background:linear-gradient(180deg,#22c7b6,#0f766e) !important;
+}
+
+/* Cartes de modes avec identités distinctes, comme Addition/Soustraction */
+.mode-grid{
+  grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,2fr) !important;
+  gap:18px !important;
+}
+.mode-card{
+  position:relative !important;
+  overflow:hidden !important;
+  padding:22px !important;
+  border-width:2px !important;
+  box-shadow:none !important;
+}
+.mode-card::before{
+  content:"";
+  position:absolute;
+  width:125px;
+  height:125px;
+  right:-40px;
+  bottom:-52px;
+  border-radius:999px;
+  pointer-events:none;
+}
+.mode-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(125deg,transparent 0 70%,rgba(255,255,255,.035) 70% 71%,transparent 71% 100%) !important;
+  pointer-events:none;
+}
+.training{
+  background:linear-gradient(180deg,#10383a,#0b2b2e) !important;
+  border-color:#167a7a !important;
+}
+.training::before{background:rgba(45,212,191,.10)}
+.training .mode-icon{
+  background:#115e59 !important;
+  color:#99f6e4 !important;
+}
+.training .mode-description{color:#b7f7ec !important}
+
+.classic{
+  background:linear-gradient(180deg,#12383f,#102d3b) !important;
+  border-color:#1688a0 !important;
+}
+.classic::before{background:rgba(34,211,238,.10)}
+.classic .mode-icon{
+  background:#155e75 !important;
+  color:#a5f3fc !important;
+}
+.classic .mode-description{color:#c7f4fb !important}
+.classic .score-memory-title,
+.classic .score-line strong{color:#67e8f9 !important}
+.classic .score-line{border-top-color:#176b7d !important}
+
+.sudden{
+  background:linear-gradient(180deg,#431927,#321320) !important;
+  border-color:#9f3650 !important;
+}
+.sudden::before{background:rgba(251,113,133,.10)}
+.sudden .mode-icon{
+  background:#651c31 !important;
+  color:#fda4af !important;
+}
+.sudden .mode-description{color:#fecdd3 !important}
+
+.btn-primary{
+  background:linear-gradient(180deg,#21c7b5,#0d8d83) !important;
+  box-shadow:0 8px 18px rgba(20,184,166,.13) !important;
+}
+.classic-count-btn.active{
+  background:#0f7d82 !important;
+  border-color:#67e8f9 !important;
+  color:#fff !important;
+}
+
+/* Jeu */
+.session-level-pill{
+  border-color:rgba(45,212,191,.52) !important;
+  background:rgba(13,100,92,.32) !important;
+}
+.instruction{
+  position:relative !important;
+  overflow:hidden !important;
+  background:
+    radial-gradient(circle at 96% 20%,rgba(45,212,191,.09),transparent 8rem),
+    rgba(17,70,70,.24) !important;
+  border-color:rgba(94,234,212,.18) !important;
+  color:#d9f7f3 !important;
+}
+.calc-box{
+  background:
+    radial-gradient(circle at 100% 0,rgba(34,211,238,.055),transparent 8rem),
+    rgba(5,23,26,.82) !important;
+  border-color:rgba(94,234,212,.14) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+.calc-label{color:#67e8f9 !important}
+.answer-input{
+  border-color:rgba(94,234,212,.28) !important;
+  background:rgba(3,17,20,.90) !important;
+}
+.answer-input.active-entry,
+.carry-input.active-entry,
+.side-carry-input.active-entry{
+  border-color:#2dd4bf !important;
+  box-shadow:
+    0 0 0 5px rgba(45,212,191,.15),
+    0 0 20px rgba(45,212,191,.16) !important;
+}
+.numpad{
+  background:
+    radial-gradient(circle at 90% 5%,rgba(45,212,191,.08),transparent 8rem),
+    rgba(5,23,26,.80) !important;
+  border-color:rgba(94,234,212,.14) !important;
+}
+.num-key{
+  background:rgba(15,61,63,.76) !important;
+  border-color:rgba(94,234,212,.18) !important;
+}
+
+/* Aide tables : plus compacte et plus turquoise */
+.tables-panel{
+  width:174px !important;
+  padding:11px 10px !important;
+  border-color:rgba(94,234,212,.32) !important;
+  background:
+    radial-gradient(circle at 92% 8%,rgba(45,212,191,.10),transparent 8rem),
+    rgba(5,25,27,.97) !important;
+  box-shadow:0 20px 50px rgba(0,0,0,.40),0 0 26px rgba(20,184,166,.07) !important;
+}
+.tables-panel-title{color:#eafffb !important}
+.table-picker{
+  border-color:rgba(94,234,212,.28) !important;
+  background:#0d3535 !important;
+  color:#ecfffc !important;
+}
+.table-list{
+  display:grid !important;
+  gap:2px !important;
+}
+.table-row{
+  display:grid !important;
+  grid-template-columns:max-content 15px max-content !important;
+  justify-content:center !important;
+  align-items:center !important;
+  column-gap:4px !important;
+  padding:4px 3px !important;
+  border-radius:7px !important;
+  color:#eafffb !important;
+  font-size:1rem !important;
+  font-weight:900 !important;
+}
+.table-row:nth-child(5n){
+  background:rgba(45,212,191,.055) !important;
+}
+.table-left{text-align:right !important}
+.table-eq{
+  text-align:center !important;
+  color:#67e8f9 !important;
+}
+.table-result{
+  text-align:left !important;
+  color:#f8d66d !important;
+}
+.tables-open #gameScreen{
+  margin-left:190px !important;
+  width:calc(100% - 190px) !important;
+}
+
+/* HARD garde son identité rouge/braise, mais reçoit une légère trace turquoise
+   pour rappeler l'application d'origine. */
+.hard-level-card,
+.hard-session-bar,
+.hard-calc-card{
+  box-shadow:
+    0 14px 32px rgba(0,0,0,.23),
+    inset 0 1px 0 rgba(255,255,255,.03),
+    0 0 24px rgba(45,212,191,.025) !important;
+}
+
+/* Mode clair cohérent et pastel turquoise */
+body.light-mode{
+  --text:#173a3b !important;
+  --muted:#5e7778 !important;
+  background:
+    radial-gradient(circle at 8% 8%,rgba(153,246,228,.52),transparent 24rem),
+    radial-gradient(circle at 92% 8%,rgba(165,243,252,.45),transparent 23rem),
+    linear-gradient(145deg,#effcf9,#f8ffff 52%,#eefafa) !important;
+}
+.light-mode .panel,
+.light-mode .card{
+  background:rgba(250,255,254,.93) !important;
+  border-color:#c8e8e4 !important;
+}
+.light-mode .settings-box,
+.light-mode .calc-box,
+.light-mode .numpad{
+  background:rgba(246,253,252,.94) !important;
+  border-color:#c6e4e1 !important;
+}
+.light-mode .method-card,
+.light-mode .mult-chip{
+  background:#f6fffd !important;
+  color:#24575a !important;
+  border-color:#c8e8e4 !important;
+}
+.light-mode .method-option input:checked+.method-card,
+.light-mode .mult-chip.active{
+  background:#d8faf4 !important;
+  color:#155e5c !important;
+  border-color:#54cabc !important;
+}
+.light-mode .training{
+  background:#effcf8 !important;
+  border-color:#a7e6dc !important;
+}
+.light-mode .classic{
+  background:#eefbfc !important;
+  border-color:#a9dfe8 !important;
+}
+.light-mode .sudden{
+  background:#fff3f5 !important;
+  border-color:#f5c2cb !important;
+}
+.light-mode .tables-panel{
+  background:rgba(249,255,254,.98) !important;
+  color:#173a3b !important;
+}
+.light-mode .table-row{color:#173a3b !important}
+.light-mode .table-picker{
+  background:#fff !important;
+  color:#184c4d !important;
+  border-color:#b9dfda !important;
+}
+
+@media(max-width:1020px){
+  .mode-grid{grid-template-columns:1fr !important}
+  .tables-open #gameScreen{margin-left:0 !important;width:100% !important}
+}
+
+</style>
+</head>
+<body>
+<button class="fullscreen-btn" id="fullscreenBtn" type="button">⛶ Plein écran</button>
+<button class="theme-toggle-btn" id="themeToggleBtn" type="button">☀️ Mode clair</button>
+<main class="app">
+<header><h1>Multiplication simple</h1><div class="subtitle-row"><p class="subtitle">Deux multiplications posées à la fois.</p><span class="app-version">v2.1</span></div></header>
+
+<section id="menuScreen" class="panel menu-panel">
+  <div class="settings-grid">
+    <section class="settings-box">
+      <h3>Réglages des reports</h3><p>Choisis la méthode utilisée en classe.</p>
+      <div class="method-options">
+        <label class="method-option"><input type="radio" name="carryMethod" value="top" checked><span class="method-card"><span class="method-icon">↖</span><span><span class="method-name">Report au-dessus</span><span class="method-hint">La retenue est écrite au-dessus du chiffre suivant.</span></span></span></label>
+        <label class="method-option"><input type="radio" name="carryMethod" value="side"><span class="method-card"><span class="method-icon">▣</span><span><span class="method-name">Report sur le côté</span><span class="method-hint">La retenue est écrite dans une case à droite du calcul.</span></span></span></label>
+      </div>
+    </section>
+    <section class="settings-box">
+      <h3>Multiplicateurs</h3><p>Choisis les tables qui peuvent apparaître dans les exercices normaux.</p>
+      <div class="multiplier-picker" id="multiplierPicker">
+        <button class="mult-chip all active" type="button" data-mult="all">Toutes</button>
+        <button class="mult-chip active" type="button" data-mult="2">2</button><button class="mult-chip active" type="button" data-mult="3">3</button><button class="mult-chip active" type="button" data-mult="4">4</button><button class="mult-chip active" type="button" data-mult="5">5</button><button class="mult-chip active" type="button" data-mult="6">6</button><button class="mult-chip active" type="button" data-mult="7">7</button><button class="mult-chip active" type="button" data-mult="8">8</button><button class="mult-chip active" type="button" data-mult="9">9</button>
+      </div>
+      <p class="mult-hint">Tu peux par exemple ne garder que 2, 3 et 5. En HARD, les multiplicateurs 2 à 9 sont toujours tous utilisés.</p>
+    </section>
+  </div>
+  <div class="menu-heading"><h2>Choisis ton mode</h2><p>Choisis un <strong>niveau</strong>, puis ton type de partie.</p></div>
+  <div class="mode-grid">
+    <article class="mode-card training"><div class="mode-icon">🧠</div><h3 class="mode-title">Entraînement</h3><p class="mode-description">Deux multiplications à la fois, sans points et sans limite.</p><div class="mode-settings"><label for="trainingLevel">Niveau</label><select class="native-level" id="trainingLevel"></select><button class="btn btn-training" id="startTraining" type="button">S’entraîner</button></div></article>
+    <article class="mode-card classic"><div class="mode-icon">✕</div><h3 class="mode-title">Calculs</h3><p class="mode-description">Choisis une série de 4, 10 ou 20 multiplications. Un point par calcul juste au premier essai.</p><div class="classic-count-wrap"><label>Nombre de calculs</label><div class="classic-count-picker"><button class="classic-count-btn" data-count="4">4</button><button class="classic-count-btn active" data-count="10">10</button><button class="classic-count-btn" data-count="20">20</button></div></div><div class="score-memory hidden" id="bestClassicScore"></div><div class="mode-settings"><label for="classicLevel">Niveau</label><select class="native-level" id="classicLevel"></select><button class="btn btn-primary" id="startClassic" type="button">Lancer les 10 calculs</button></div></article>
+    <article class="mode-card sudden"><div class="mode-icon">⚡</div><h3 class="mode-title">Mort subite</h3><p class="mode-description">La première multiplication fausse arrête immédiatement la partie.</p><div class="score-memory hidden" id="bestSuddenScore"></div><div class="mode-settings"><label for="suddenLevel">Niveau</label><select class="native-level" id="suddenLevel"></select><button class="btn btn-gold" id="startSudden" type="button">Lancer la mort subite</button></div></article>
+  </div>
+</section>
+
+<section id="gameScreen" class="hidden">
+  <div class="panel session-bar"><div class="session-mode" id="sessionMode">✕ Calculs</div><div class="session-pill session-level-pill" id="sessionLevel">Niveau 2</div><div class="session-pill" id="sessionProgress">1–2 / 10</div><div class="session-pill" id="sessionScore">Score : 0 / 10</div><button class="btn btn-secondary" id="tablesBtn">✖ Afficher les tables de multiplication</button><button class="btn btn-secondary" id="menuBtn">Menu</button></div>
+  <aside class="tables-panel hidden" id="tablesPanel" aria-hidden="true"><div class="tables-panel-title">Tables de multiplication</div><select class="table-picker" id="tablePicker"></select><div class="table-list" id="tableList"></div><div class="tables-used-note">Aide visuelle de comptage</div></aside>
+  <section class="card"><div class="instruction"><div>💡</div><div id="instructionText"></div></div><div class="main-workspace"><div class="pair-scroll" id="pairScroll"><div class="calculations-pair" id="calculationsPair"></div></div><div class="numpad" id="numpad"><p class="numpad-title" id="numpadTitle">Clavier tactile</p><button class="num-key" data-key="1">1</button><button class="num-key" data-key="2">2</button><button class="num-key" data-key="3">3</button><button class="num-key" data-key="4">4</button><button class="num-key" data-key="5">5</button><button class="num-key" data-key="6">6</button><button class="num-key" data-key="7">7</button><button class="num-key" data-key="8">8</button><button class="num-key" data-key="9">9</button><button class="num-key action" data-key="backspace">⌫</button><button class="num-key" data-key="0">0</button><button class="num-key check" data-key="check">✓</button></div></div><div class="controls"><button class="btn btn-success" id="primaryBtn">Valider</button><button class="btn btn-secondary" id="resetBtn">Effacer</button><button class="btn btn-hint hidden" id="hintBtn">💡 Indice report</button></div><div class="feedback" id="feedback" aria-live="polite">Commence par les unités du calcul 1.</div></section>
+</section>
+
+<section id="hardMenu" class="panel hard-shell hidden"><div class="hard-head"><div><div class="hard-title">Mode HARD</div><div class="subtitle">Multiplicateurs 2 à 9 · un calcul à la fois</div></div><button class="hard-back" id="hardMenuBack">← Menu normal</button></div><div class="hard-level-grid" id="hardLevelGrid"></div></section>
+<section id="hardGame" class="hidden"><div class="hard-game"><div class="hard-session-bar"><div><div class="hard-session-title" id="hardSessionTitle">Multiplication simple · HARD LVL 1</div><div class="hard-session-meta" id="hardSessionMeta"></div></div><div class="hard-session-stats"><div class="hard-session-score sun-score" id="hardSessionScore">Score 0</div><div class="hard-session-counter" id="hardSessionCounter">Calcul 1</div></div><button class="hard-back" id="hardGameBack">← HARD</button></div><div class="hard-calc-label" id="hardCalcLabel">Calcul 1</div><div class="hard-operation-area"><div class="hard-calc-card" id="hardOperationCard"></div></div><div class="hard-numpad" id="hardNumpad"><button class="hard-key" data-key="1">1</button><button class="hard-key" data-key="2">2</button><button class="hard-key" data-key="3">3</button><button class="hard-key" data-key="4">4</button><button class="hard-key" data-key="5">5</button><button class="hard-key" data-key="6">6</button><button class="hard-key" data-key="7">7</button><button class="hard-key" data-key="8">8</button><button class="hard-key" data-key="9">9</button><button class="hard-key back" data-key="back">⌫</button><button class="hard-key" data-key="0">0</button><button class="hard-key check" data-key="check">✓</button></div><div class="hard-controls"><button class="btn btn-success" id="hardPrimary">Valider</button><button class="btn btn-secondary" id="hardClear">Effacer</button></div><div class="hard-feedback" id="hardFeedback"></div></div></section>
+</main>
+
+<script>
+/* ---------- Math'as ---------- */
+function estMeilleurResultat(nouveau,ancien){
+  if(!ancien)return true;
+  // Règle propre à Multi1 : sans affichage des tables > avec affichage des tables.
+  const aideN=!!nouveau.aideTables,aideA=!!ancien.aideTables;
+  if(aideN!==aideA)return !aideN;
+  const tn=nouveau.total>0?nouveau.score/nouveau.total:0,ta=ancien.total>0?ancien.score/ancien.total:0;
+  if(tn!==ta)return tn>ta;
+  if(nouveau.total!==ancien.total)return nouveau.total>ancien.total;
+  if((nouveau.niveauRang??0)!==(ancien.niveauRang??0))return (nouveau.niveauRang??0)>(ancien.niveauRang??0);
+  return true
+}
+function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=false,toutesTables=false){
+  const key="mathas_scores_"+window.location.pathname.toLowerCase();
+  const nouveauResultat={score,total,niveau,niveauRang,date:new Date().toISOString(),aideTables:!!aideTables,toutesTables:!!toutesTables};
+  let donnees={dernier:null,meilleur:null};
+  try{const e=JSON.parse(localStorage.getItem(key));if(e&&typeof e==='object')donnees={dernier:e.dernier??null,meilleur:e.meilleur??null}}catch{}
+  donnees.dernier=nouveauResultat;if(estMeilleurResultat(nouveauResultat,donnees.meilleur))donnees.meilleur=nouveauResultat;
+  localStorage.setItem(key,JSON.stringify(donnees))
+}
+</script>
+<script>
+(()=>{
+  const $=id=>document.getElementById(id);
+  const LEVELS={1:3,2:5,3:7};
+  const HARD=[{level:1,digits:10},{level:2,digits:12},{level:3,digits:16}];
+  const SETTINGS_KEY='multi1_settings_v1',CLASSIC_KEY='multi1_classic_v1',SUDDEN_KEY='multi1_sudden_v1',HARD_KEY='multi1_hard_sudden_v1',LAST_KEY='multi1_last_work';
+  const menuScreen=$('menuScreen'),gameScreen=$('gameScreen'),hardMenu=$('hardMenu'),hardGame=$('hardGame');
+  const levelSelects=[$('trainingLevel'),$('classicLevel'),$('suddenLevel')];
+  const startTraining=$('startTraining'),startClassic=$('startClassic'),startSudden=$('startSudden');
+  const sessionMode=$('sessionMode'),sessionLevel=$('sessionLevel'),sessionProgress=$('sessionProgress'),sessionScore=$('sessionScore');
+  const calculationsPair=$('calculationsPair'),pairScroll=$('pairScroll'),feedback=$('feedback'),instructionText=$('instructionText');
+  const primaryBtn=$('primaryBtn'),resetBtn=$('resetBtn'),hintBtn=$('hintBtn'),menuBtn=$('menuBtn'),numpad=$('numpad'),numpadTitle=$('numpadTitle');
+  const tablesBtn=$('tablesBtn'),tablesPanel=$('tablesPanel'),tablePicker=$('tablePicker'),tableList=$('tableList');
+  const multiplierPicker=$('multiplierPicker');
+  let selectedCount=10,selectedMultipliers=new Set([2,3,4,5,6,7,8,9]),carryMethod='top';
+  let session=null,states=[],active={kind:'answer',calc:0,col:0},phase='menu',tablesOpen=false;
+
+  const safeGet=(k,d)=>{try{const x=JSON.parse(localStorage.getItem(k));return x??d}catch{return d}};
+  const safeSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+  const digitAt=(s,c)=>{const i=s.length-1-c;return i>=0?Number(s[i]):0};
+  const isAllMultipliers=()=>[2,3,4,5,6,7,8,9].every(n=>selectedMultipliers.has(n));
+
+  function loadSettings(){
+    const s=safeGet(SETTINGS_KEY,{});carryMethod=s.carryMethod==='side'?'side':'top';
+    const list=Array.isArray(s.multipliers)?s.multipliers.map(Number).filter(n=>n>=2&&n<=9):[2,3,4,5,6,7,8,9];if(list.length)selectedMultipliers=new Set(list);
+    selectedCount=[4,10,20].includes(+s.count)?+s.count:10;
+    const level=[1,2,3].includes(+s.level)?+s.level:2;
+    levelSelects.forEach(x=>x.dataset.initialLevel=String(level));
+    document.querySelector(`input[name="carryMethod"][value="${carryMethod}"]`).checked=true;syncMultiplierUI();syncCountUI()
+  }
+  function saveSettings(level=null){safeSet(SETTINGS_KEY,{carryMethod,multipliers:[...selectedMultipliers].sort((a,b)=>a-b),count:selectedCount,level:level??currentNormalLevel()})}
+  function currentNormalLevel(){const v=+($('classicLevel').value||2);return [1,2,3].includes(v)?v:2}
+
+  function populateLevels(){
+    levelSelects.forEach(sel=>{sel.innerHTML='';for(let l=1;l<=3;l++){const o=document.createElement('option');o.value=String(l);o.textContent=`Niveau ${l}`;sel.appendChild(o)}const h=document.createElement('option');h.value='__hard__';h.textContent='⚠ Activer HARD';sel.appendChild(h);sel.value=sel.dataset.initialLevel||'2'});
+    syncLevelsFrom(levelSelects[0])
+  }
+  function syncLevelsFrom(src){if(src.value==='__hard__'){openHardMenu();return}levelSelects.forEach(s=>{if(s!==src)s.value=src.value;s._syncSlide?.()});saveSettings(+src.value)}
+  levelSelects.forEach(s=>s.addEventListener('change',()=>syncLevelsFrom(s)));
+
+  function buildSlidableSelects(){
+    levelSelects.forEach(select=>{
+      const wrap=document.createElement('div');wrap.className='slide-select-wrap';select.parentNode.insertBefore(wrap,select);wrap.appendChild(select);select.classList.add('slide-select-native');
+      const btn=document.createElement('button');btn.type='button';btn.className='slide-select-button';const menu=document.createElement('div');menu.className='slide-select-menu hidden';
+      const sync=()=>{const o=[...select.options].find(o=>o.value===select.value)||select.options[0];btn.textContent=o.textContent;menu.querySelectorAll('.slide-option:not(.hard-option)').forEach(b=>b.classList.toggle('selected',b.dataset.value===select.value))};
+      [...select.options].filter(o=>o.value!=='__hard__').forEach(o=>{const b=document.createElement('button');b.type='button';b.className='slide-option';b.dataset.value=o.value;b.textContent=o.textContent;b.addEventListener('click',()=>{select.value=o.value;syncLevelsFrom(select);sync();wrap.classList.remove('open');menu.classList.add('hidden')});menu.appendChild(b)});
+      const buffer=document.createElement('div');buffer.className='hard-scroll-buffer';menu.appendChild(buffer);const hb=document.createElement('button');hb.type='button';hb.className='slide-option hard-option';hb.textContent='Activer HARD';hb.addEventListener('click',()=>{wrap.classList.remove('open');menu.classList.add('hidden');openHardMenu()});menu.appendChild(hb);
+      btn.addEventListener('click',()=>{const opening=!wrap.classList.contains('open');document.querySelectorAll('.slide-select-wrap.open').forEach(w=>{w.classList.remove('open');w.querySelector('.slide-select-menu')?.classList.add('hidden')});if(!opening)return;wrap.classList.add('open','open-up');menu.classList.remove('hidden');requestAnimationFrame(()=>{const normals=[...menu.querySelectorAll('.slide-option:not(.hard-option)')],last=normals.at(-1);const normalHeight=Math.ceil((last?.offsetTop||0)+(last?.offsetHeight||42)+6);const available=Math.max(140,btn.getBoundingClientRect().top-12);const h=Math.min(normalHeight,available);menu.style.height=`${h}px`;menu.style.maxHeight=`${h}px`;menu.scrollTop=0})});
+      select._syncSlide=sync;wrap.append(btn,menu);select.addEventListener('change',sync);sync()
+    });document.addEventListener('pointerdown',e=>{if(!e.target.closest('.slide-select-wrap'))document.querySelectorAll('.slide-select-wrap.open').forEach(w=>{w.classList.remove('open');w.querySelector('.slide-select-menu')?.classList.add('hidden')})})
+  }
+
+  function syncMultiplierUI(){
+    multiplierPicker.querySelectorAll('[data-mult]').forEach(b=>{
+      if(b.dataset.mult==='all')b.classList.toggle('active',isAllMultipliers());
+      else b.classList.toggle('active',selectedMultipliers.has(+b.dataset.mult))
+    })
+  }
+  multiplierPicker.addEventListener('click',e=>{
+    const b=e.target.closest('[data-mult]');if(!b)return;
+    const v=b.dataset.mult;
+    if(v==='all'){
+      selectedMultipliers=new Set([2,3,4,5,6,7,8,9])
+    }else{
+      const n=+v;
+      if(isAllMultipliers()){
+        // Depuis "Toutes", le premier chiffre cliqué devient l'unique sélection.
+        selectedMultipliers=new Set([n])
+      }else if(selectedMultipliers.has(n)){
+        // On peut retirer un choix, mais jamais laisser la sélection vide.
+        if(selectedMultipliers.size>1)selectedMultipliers.delete(n)
+      }else{
+        selectedMultipliers.add(n)
+      }
+    }
+    syncMultiplierUI();
+    saveSettings()
+  });
+  document.querySelectorAll('input[name="carryMethod"]').forEach(r=>r.addEventListener('change',()=>{carryMethod=document.querySelector('input[name="carryMethod"]:checked').value;saveSettings()}));
+  document.querySelectorAll('.classic-count-btn').forEach(b=>b.addEventListener('click',()=>{selectedCount=+b.dataset.count;syncCountUI();saveSettings()}));
+  function syncCountUI(){document.querySelectorAll('.classic-count-btn').forEach(b=>b.classList.toggle('active',+b.dataset.count===selectedCount));startClassic.textContent=`Lancer les ${selectedCount} calculs`}
+
+  function randomString(len){let s=String(1+Math.floor(Math.random()*9));for(let i=1;i<len;i++)s+=Math.floor(Math.random()*10);return s}
+  function chooseLen(max){const r=Math.random();return Math.max(1,r<.56?max:r<.86?max-1:max-2)}
+  function chooseMultiplier(list=[...selectedMultipliers]){return list[Math.floor(Math.random()*list.length)]}
+  function generateMultiplication(maxDigits,mults=[...selectedMultipliers],exact=false){
+    const a=randomString(exact?maxDigits:chooseLen(maxDigits)),m=chooseMultiplier(mults),result=(BigInt(a)*BigInt(m)).toString(),count=a.length,answerCount=result.length;
+    const incoming=Array(count).fill(0),outgoing=Array(count).fill(0);let carry=0;
+    for(let c=0;c<count;c++){incoming[c]=carry;const p=digitAt(a,c)*m+carry;carry=Math.floor(p/10);outgoing[c]=carry}
+    return{a,m,result,count,answerCount,incoming,outgoing,answerValues:Array(answerCount).fill(''),carryValues:Array(count).fill(''),sideCarryValues:Array(count).fill(''),wrongHistory:Array(answerCount).fill(''),carryWrong:Array(count).fill(''),firstTry:true,solved:false}
+  }
+
+  function startSession(mode){
+    closeTables(false);const level=+(mode==='classic'?$('classicLevel').value:mode==='sudden'?$('suddenLevel').value:$('trainingLevel').value);if(![1,2,3].includes(level))return;
+    saveSettings(level);carryMethod=document.querySelector('input[name="carryMethod"]:checked').value;
+    session={mode,level,maxDigits:LEVELS[level],total:mode==='classic'?selectedCount:null,score:0,completed:0,tablesUsed:false,allMultipliers:isAllMultipliers(),multipliers:[...selectedMultipliers]};
+    menuScreen.classList.add('hidden');hardMenu.classList.add('hidden');gameScreen.classList.remove('hidden');phase='answering';makePair()
+  }
+  startTraining.onclick=()=>startSession('training');startClassic.onclick=()=>startSession('classic');startSudden.onclick=()=>startSession('sudden');
+  menuBtn.onclick=()=>goMenu();
+  function goMenu(){closeTables(false);gameScreen.classList.add('hidden');hardGame.classList.add('hidden');hardMenu.classList.add('hidden');menuScreen.classList.remove('hidden');phase='menu';refreshMenuScores();refreshLastWork();window.scrollTo({top:0,behavior:'smooth'})}
+
+  function makePair(){
+    states=[generateMultiplication(session.maxDigits,session.multipliers),generateMultiplication(session.maxDigits,session.multipliers)];active={kind:'answer',calc:0,col:0};calculationsPair.innerHTML='';states.forEach((s,i)=>renderCalc(s,i));phase='answering';primaryBtn.textContent='Valider';resetBtn.disabled=false;hintBtn.classList.toggle('hidden',session.mode!=='training');updateInstruction();updateBar();setFeedback('Commence par les unités du calcul 1.','');focusAnswer(0,0);updateSecondDim();requestAnimationFrame(updateScrollArrow)
+  }
+  function groupSep(el,c){if(c>0&&c%3===0)el.classList.add('group-sep')}
+  function renderCalc(s,i){
+    const box=document.createElement('div');box.className='calc-box';box.dataset.calc=i;const lab=document.createElement('div');lab.className='calc-label';lab.textContent=`Calcul ${session.completed+i+1}`;box.appendChild(lab);
+    const ow=document.createElement('div');ow.className='calc-operation-wrap';const op=document.createElement('div');op.className='operation';op.dataset.calc=i;op.style.setProperty('--cols',s.answerCount);
+    // carry row
+    op.appendChild(div('op-empty'));for(let c=s.answerCount-1;c>=0;c--){if(c>=1&&c<s.count&&carryMethod==='top'){const w=div('carry-wrap');groupSep(w,c);const inp=mkInput('carry-input');inp.dataset.calc=i;inp.dataset.carryCol=c;inp.addEventListener('focus',()=>setActive('carry',i,c,inp));const wh=div('carry-wrong');wh.dataset.carryWrong=c;w.append(inp,wh);op.appendChild(w)}else op.appendChild(div('op-empty'))}
+    // multiplicand
+    op.appendChild(div('op-empty'));for(let c=s.answerCount-1;c>=0;c--){const d=div('digit');groupSep(d,c);if(c<s.count)d.textContent=digitAt(s.a,c);op.appendChild(d)}
+    // multiplier
+    const multOp=div('operator');multOp.textContent='×';op.appendChild(multOp);for(let c=s.answerCount-1;c>=0;c--){const d=div('digit');groupSep(d,c);if(c===0)d.textContent=s.m;op.appendChild(d)}
+    const bar=div('bar');op.appendChild(bar);
+    // answers
+    op.appendChild(div('op-empty'));for(let c=s.answerCount-1;c>=0;c--){const w=div('answer-wrap');groupSep(w,c);const inp=mkInput('answer-input');inp.dataset.calc=i;inp.dataset.col=c;inp.addEventListener('focus',()=>setActive('answer',i,c,inp));const wh=div('wrong-history');wh.dataset.wrong=c;w.append(inp,wh);op.appendChild(w)}
+    ow.appendChild(op);
+    const side=div('side-carry-panel'+(carryMethod==='side'?'':' hidden-side'));side.dataset.sideCalc=i;const sl=div('side-carry-label');sl.textContent='Report';const si=mkInput('side-carry-input');si.dataset.calc=i;si.addEventListener('focus',()=>{const c=nextMissingSideCarry(i);setActive('side',i,c??1,si)});const sh=div('side-carry-history');side.append(sl,si,sh);ow.appendChild(side);box.appendChild(ow);const st=div('calc-status');box.appendChild(st);calculationsPair.appendChild(box)
+  }
+  function div(cls=''){const e=document.createElement('div');e.className=cls;return e}
+  function mkInput(cls){const i=document.createElement('input');i.type='text';i.readOnly=true;i.inputMode='none';i.autocomplete='off';i.setAttribute('virtualkeyboardpolicy','manual');i.maxLength=1;i.className=cls;i.addEventListener('keydown',onKey);return i}
+  function opFor(i){return calculationsPair.querySelector(`.operation[data-calc="${i}"]`)}
+  function answerFor(i,c){return opFor(i)?.querySelector(`.answer-input[data-col="${c}"]`)}
+  function carryFor(i,c){return opFor(i)?.querySelector(`.carry-input[data-carry-col="${c}"]`)}
+  function sideFor(i){return calculationsPair.querySelector(`.side-carry-panel[data-side-calc="${i}"] .side-carry-input`)}
+  function status(i,t,type=''){const e=calculationsPair.querySelector(`.calc-box[data-calc="${i}"] .calc-status`);if(e){e.textContent=t;e.className=`calc-status${type?' '+type:''}`}}
+  function setFeedback(t,type=''){feedback.textContent=t;feedback.className=`feedback${type?' '+type:''}`}
+  function setActive(kind,calc,col,el){calculationsPair.querySelectorAll('.active-entry').forEach(x=>x.classList.remove('active-entry'));active={kind,calc,col};if(el&&!el.disabled){el.classList.add('active-entry');el.focus({preventScroll:true});el.select()}numpadTitle.textContent=kind==='answer'?'Écris le chiffre du résultat':'Écris le report'}
+  function focusAnswer(i,c){requestAnimationFrame(()=>setActive('answer',i,c,answerFor(i,c)))}
+  function focusCarry(i,c){requestAnimationFrame(()=>setActive('carry',i,c,carryFor(i,c)))}
+  function focusSide(i,c){const inp=sideFor(i);if(inp){inp.value='';inp.classList.remove('bad','good');requestAnimationFrame(()=>setActive('side',i,c,inp))}}
+  function nextMissingSideCarry(i,start=1){const s=states[i];for(let c=Math.max(1,start);c<s.count;c++)if(s.incoming[c]>0&&s.sideCarryValues[c]!==String(s.incoming[c]))return c;return null}
+  function onKey(e){if(/^\d$/.test(e.key)){e.preventDefault();enterDigit(e.key)}else if(e.key==='Backspace'||e.key==='Delete'){e.preventDefault();eraseActive()}else if(e.key==='Enter'){e.preventDefault();handlePrimary()}}
+  function enterDigit(d){if(phase!=='answering'||!active)return;if(active.kind==='answer')setAnswerDigit(active.calc,active.col,d);else if(active.kind==='carry')setTopCarry(active.calc,active.col,d);else setSideCarry(active.calc,active.col,d)}
+  function setAnswerDigit(i,c,d){const s=states[i],inp=answerFor(i,c);if(!inp||inp.disabled)return;inp.value=d;inp.classList.remove('incorrect');s.answerValues[c]=d;const wh=opFor(i)?.querySelector(`[data-wrong="${c}"]`);if(wh)wh.textContent='';if(c<s.count-1&&s.outgoing[c]>0){carryMethod==='top'?focusCarry(i,c+1):focusSide(i,c+1)}else if(c+1<s.answerCount)focusAnswer(i,c+1);updateSecondDim()}
+  function setTopCarry(i,c,d){const s=states[i],inp=carryFor(i,c);if(!inp||inp.disabled)return;inp.value=d;inp.classList.remove('bad');s.carryValues[c]=d;focusAnswer(i,c)}
+  function setSideCarry(i,c,d){const s=states[i],inp=sideFor(i);if(!inp||inp.disabled)return;const expected=String(s.incoming[c]);if(d===expected){s.sideCarryValues[c]=d;inp.value=d;inp.classList.remove('bad');inp.classList.add('good');setTimeout(()=>focusAnswer(i,c),100)}else{s.firstTry=false;inp.value=d;inp.classList.add('bad');const h=inp.parentElement.querySelector('.side-carry-history');if(h)h.textContent=`✕ ${d}`;setTimeout(()=>{if(active.kind==='side'&&active.calc===i&&active.col===c){inp.value='';inp.classList.remove('bad');inp.focus({preventScroll:true})}},420)}}
+  function eraseActive(){if(!active)return;const s=states[active.calc];if(active.kind==='answer'){const inp=answerFor(active.calc,active.col);if(inp)inp.value='';s.answerValues[active.col]=''}else if(active.kind==='carry'){const inp=carryFor(active.calc,active.col);if(inp)inp.value='';s.carryValues[active.col]=''}else{const inp=sideFor(active.calc);if(inp)inp.value='';s.sideCarryValues[active.col]=''}}
+  numpad.addEventListener('mousedown',e=>{if(e.target.closest('.num-key'))e.preventDefault()});numpad.addEventListener('click',e=>{const b=e.target.closest('.num-key');if(!b)return;const k=b.dataset.key;if(/^\d$/.test(k))enterDigit(k);else if(k==='backspace')eraseActive();else if(k==='check')handlePrimary()});
+
+  function expectedDigits(s){return s.result.split('').reverse()}
+  function evaluate(i){const s=states[i],exp=expectedDigits(s);let filled=true,correct=true;for(let c=0;c<s.answerCount;c++){if(s.answerValues[c]==='')filled=false;if(s.answerValues[c]!==exp[c])correct=false}for(let c=1;c<s.count;c++){const e=s.incoming[c]>0?String(s.incoming[c]):'';if(carryMethod==='top'){const raw=s.carryValues[c],act=(e===''&&raw==='0')?'':raw;if(e!==''&&act==='')filled=false;if(act!==e)correct=false}else if(e!==''&&s.sideCarryValues[c]!==e){filled=false;correct=false}}return{filled,correct}}
+  function markErrors(i){const s=states[i],exp=expectedDigits(s);s.firstTry=false;for(let c=0;c<s.answerCount;c++){const inp=answerFor(i,c);if(s.answerValues[c]!==exp[c]){if(s.answerValues[c]!=='')s.wrongHistory[c]=s.answerValues[c];const wh=opFor(i)?.querySelector(`[data-wrong="${c}"]`);if(wh)wh.textContent=s.wrongHistory[c];s.answerValues[c]='';if(inp){inp.value='';inp.classList.add('incorrect')}}}if(carryMethod==='top'){for(let c=1;c<s.count;c++){const e=s.incoming[c]>0?String(s.incoming[c]):'',raw=s.carryValues[c],act=(e===''&&raw==='0')?'':raw;if(act!==e){const inp=carryFor(i,c),wh=opFor(i)?.querySelector(`[data-carry-wrong="${c}"]`);if(raw!=='')s.carryWrong[c]=raw;if(wh)wh.textContent=s.carryWrong[c];s.carryValues[c]='';if(inp){inp.value='';inp.classList.add('bad')}}}}}
+  function lockCalc(i){const s=states[i];s.solved=true;const box=calculationsPair.querySelector(`.calc-box[data-calc="${i}"]`);box.querySelectorAll('input').forEach(x=>{x.disabled=true;x.classList.remove('incorrect','bad','active-entry');if(x.value)x.classList.add('correct','good')});status(i,'Correct','ok');updateSecondDim()}
+  function firstTarget(){for(let i=0;i<2;i++){if(states[i].solved)continue;const s=states[i];for(let c=0;c<s.answerCount;c++)if(s.answerValues[c]==='')return{kind:'answer',i,c};for(let c=1;c<s.count;c++){const e=s.incoming[c]>0?String(s.incoming[c]):'';if(carryMethod==='top'&&e!==''&&s.carryValues[c]!==e)return{kind:'carry',i,c};if(carryMethod==='side'&&e!==''&&s.sideCarryValues[c]!==e)return{kind:'side',i,c}}}return null}
+  function focusTarget(t){if(!t)return;t.kind==='answer'?focusAnswer(t.i,t.c):t.kind==='carry'?focusCarry(t.i,t.c):focusSide(t.i,t.c)}
+  function verifyPair(){
+    const ev=states.map((s,i)=>s.solved?{filled:true,correct:true}:evaluate(i)),candidates=[];const firstReady=!states[0].solved&&ev[0].filled,secondReady=!states[1].solved&&ev[1].filled,both=(states[0].solved||ev[0].filled)&&(states[1].solved||ev[1].filled);if(firstReady)candidates.push(0);if(secondReady&&both)candidates.push(1);
+    if(!candidates.length){setFeedback('Termine d’abord le calcul 1, puis vérifie.','info');focusTarget(firstTarget());return}
+    if(session.mode==='sudden'){
+      for(const i of candidates){if(ev[i].correct){lockCalc(i);session.score++;session.completed++}else{markErrors(i);endSudden(i);return}}if(states.every(s=>s.solved)){phase='review';primaryBtn.textContent='Calculs suivants';setFeedback(`Correct. Score : ${session.score}.`,'ok')}updateBar();return
+    }
+    for(const i of candidates){if(ev[i].correct){const point=session.mode==='classic'&&states[i].firstTry?1:0;lockCalc(i);if(session.mode==='classic')session.score+=point;session.completed++}else markErrors(i)}
+    updateBar();if(states.every(s=>s.solved)){phase='review';if(session.mode==='classic'&&session.completed>=session.total)finishClassic();else{primaryBtn.textContent=session.mode==='training'?'Nouveaux calculs':'Calculs suivants';setFeedback('Les deux calculs sont terminés.','ok')}}else{setFeedback('Corrige les cases indiquées.','bad');focusTarget(firstTarget())}
+  }
+  function endSudden(i){phase='ended';setInputsEnabled(false);status(i,'Erreur : partie terminée','bad');primaryBtn.textContent='Retour au menu';setFeedback(`Mort subite terminée. Score : ${session.score}.`,'bad');saveSuddenBest();saveResult(session.score,session.score+1);setLastWork(`Mort subite · Niveau ${session.level}`,String(session.score));updateBar()}
+  function finishClassic(){phase='finished';setInputsEnabled(false);primaryBtn.textContent='Retour au menu';setFeedback(`Série terminée : ${session.score} / ${session.total}.`,'ok');saveClassicBest();saveResult(session.score,session.total);setLastWork(`Calculs · Niveau ${session.level}`,`${session.score}/${session.total}`)}
+  function saveResult(score,total){enregistrerResultatMathas(score,total,`Niveau ${session.level}`,session.level,session.tablesUsed,session.allMultipliers)}
+  function handlePrimary(){if(phase==='answering')verifyPair();else if(phase==='review'){makePair()}else if(phase==='finished'||phase==='ended')goMenu()}
+  primaryBtn.onclick=handlePrimary;
+  resetBtn.onclick=()=>{if(phase!=='answering')return;states.forEach((s,i)=>{s.answerValues.fill('');s.carryValues.fill('');s.sideCarryValues.fill('');s.firstTry=true;const box=calculationsPair.querySelector(`.calc-box[data-calc="${i}"]`);box.querySelectorAll('input').forEach(x=>{x.value='';x.classList.remove('incorrect','bad','good','correct')});box.querySelectorAll('.wrong-history,.carry-wrong,.side-carry-history').forEach(x=>x.textContent='')});focusAnswer(0,0);setFeedback('Réponses effacées.','')};
+  hintBtn.onclick=()=>{if(session?.mode!=='training')return;const s=states[active.calc];if(active.kind==='answer'){const c=active.col;const base=c<s.count?`${digitAt(s.a,c)} × ${s.m}`:'';const add=c<s.count&&s.incoming[c]?` + report ${s.incoming[c]}`:'';setFeedback(`Indice : ${base}${add}.`,'info')}else setFeedback(`Indice : le report attendu est ${s.incoming[active.col]}.`,'info')};
+  function setInputsEnabled(on){calculationsPair.querySelectorAll('input').forEach(x=>x.disabled=!on);resetBtn.disabled=!on}
+  function updateSecondDim(){const b=calculationsPair.querySelector('.calc-box[data-calc="1"]');if(b)b.classList.toggle('waiting-for-first',!states[0].solved);updateScrollArrow()}
+  function updateInstruction(){instructionText.innerHTML=carryMethod==='top'?'<strong>Commence par les unités.</strong> Écris le chiffre du résultat, puis le report au-dessus du chiffre suivant lorsqu’il y en a un.':'<strong>Commence par les unités.</strong> Écris le chiffre du résultat, puis place le report dans la case à droite avant de continuer vers la gauche.'}
+  function updateBar(){sessionLevel.textContent=`Niveau ${session.level}`;sessionMode.textContent=session.mode==='training'?'🧠 Entraînement':session.mode==='sudden'?'⚡ Mort subite':'✕ Calculs';if(session.mode==='training'){sessionProgress.textContent=`Calcul ${session.completed+1}`;sessionScore.textContent='Sans points'}else if(session.mode==='classic'){const a=Math.min(session.completed+1,session.total),b=Math.min(session.completed+2,session.total);sessionProgress.textContent=`${a}${b>a?'–'+b:''} / ${session.total}`;sessionScore.textContent=`Score : ${session.score} / ${session.total}`}else{sessionProgress.textContent=`Calcul ${session.completed+1}`;sessionScore.textContent=`Score : ${session.score}`}sessionScore.classList.toggle('sun-score',session.allMultipliers)}
+
+  // Tables de multiplication
+  for(let n=1;n<=10;n++){const o=document.createElement('option');o.value=String(n);o.textContent=`Table de ${n}`;tablePicker.appendChild(o)}tablePicker.value='2';
+  function renderTable(){
+    const n=+tablePicker.value;
+    tableList.innerHTML='';
+    for(let k=1;k<=10;k++){
+      const r=div('table-row');
+      r.innerHTML=`<span class="table-left">${k} × ${n}</span><span class="table-eq">=</span><span class="table-result">${k*n}</span>`;
+      tableList.appendChild(r)
+    }
+  }
+  tablePicker.onchange=renderTable;
+  renderTable();
+  function openTables(){if(!session)return;tablesOpen=true;session.tablesUsed=true;tablesPanel.classList.remove('hidden');tablesPanel.setAttribute('aria-hidden','false');document.body.classList.add('tables-open');tablesBtn.textContent='✖ Masquer les tables';requestAnimationFrame(updateScrollArrow)}
+  function closeTables(update=true){tablesOpen=false;tablesPanel.classList.add('hidden');tablesPanel.setAttribute('aria-hidden','true');document.body.classList.remove('tables-open');tablesBtn.textContent='✖ Afficher les tables de multiplication';if(update)requestAnimationFrame(updateScrollArrow)}
+  tablesBtn.onclick=()=>tablesOpen?closeTables():openTables();
+
+  // Scroll arrow
+  const workspace=document.querySelector('.main-workspace'),scrollArrow=document.createElement('button');scrollArrow.type='button';scrollArrow.className='pair-scroll-arrow hidden';scrollArrow.textContent='➜';scrollArrow.title='Voir le calcul de droite';workspace.appendChild(scrollArrow);
+  function positionArrow(){scrollArrow.style.left=`${pairScroll.offsetLeft+pairScroll.clientWidth-82}px`;scrollArrow.style.top=`${pairScroll.offsetTop+pairScroll.clientHeight/2-38}px`}
+  function updateScrollArrow(){const max=Math.max(0,pairScroll.scrollWidth-pairScroll.clientWidth),second=calculationsPair.querySelector('.calc-box[data-calc="1"]'),show=max>20&&second&&!second.classList.contains('waiting-for-first')&&pairScroll.scrollLeft<max-5;scrollArrow.classList.toggle('hidden',!show);positionArrow()}
+  scrollArrow.onclick=()=>pairScroll.scrollTo({left:pairScroll.scrollWidth,behavior:'smooth'});pairScroll.addEventListener('scroll',updateScrollArrow,{passive:true});window.addEventListener('resize',updateScrollArrow);new MutationObserver(()=>requestAnimationFrame(updateScrollArrow)).observe(calculationsPair,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+
+  // scores menu / last work
+  function scoreStore(k){return safeGet(k,{})}function scoreKey(){return `${session.level}|${session.multipliers.slice().sort((a,b)=>a-b).join('-')}`}
+  function saveClassicBest(){const s=scoreStore(CLASSIC_KEY),k=scoreKey(),cur=s[k];if(!cur||session.score/session.total>cur.score/cur.total||(session.score/session.total===cur.score/cur.total&&session.total>cur.total)){s[k]={score:session.score,total:session.total};safeSet(CLASSIC_KEY,s)}}
+  function saveSuddenBest(){const s=scoreStore(SUDDEN_KEY),k=scoreKey();s[k]=Math.max(Number(s[k]||0),session.score);safeSet(SUDDEN_KEY,s)}
+  function refreshMenuScores(){const c=scoreStore(CLASSIC_KEY),s=scoreStore(SUDDEN_KEY),bc=$('bestClassicScore'),bs=$('bestSuddenScore');const cv=Object.values(c),sv=Object.values(s).map(Number);if(cv.length){const best=cv.sort((a,b)=>(b.score/b.total)-(a.score/a.total)||b.total-a.total)[0];bc.textContent=`Meilleur enregistré : ${best.score}/${best.total}`;bc.classList.remove('hidden')}else bc.classList.add('hidden');if(sv.length){bs.textContent=`Meilleur score : ${Math.max(...sv)}`;bs.classList.remove('hidden')}else bs.classList.add('hidden')}
+  function setLastWork(label,score){safeSet(LAST_KEY,{label,score,at:new Date().toISOString(),allTables:session?.allMultipliers||false});refreshLastWork()}
+  function refreshLastWork(){let card=$('lastWorkCard'),d=safeGet(LAST_KEY,null);if(!card){card=document.createElement('div');card.id='lastWorkCard';card.className='last-work-card';card.innerHTML='<div class="last-work-title">Dernier travail</div><div class="last-work-main"></div><div class="last-work-sub"></div>';menuScreen.appendChild(card)}if(!d){card.style.display='none';return}card.style.display='block';const m=card.querySelector('.last-work-main');m.textContent=`${d.label} · Score : ${d.score}`;m.classList.toggle('sun-score',!!d.allTables);try{card.querySelector('.last-work-sub').textContent=`Fait à ${new Date(d.at).toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'})}`}catch{}}
+
+  // HARD
+  const hardLevelGrid=$('hardLevelGrid'),hardSessionTitle=$('hardSessionTitle'),hardSessionMeta=$('hardSessionMeta'),hardSessionScore=$('hardSessionScore'),hardSessionCounter=$('hardSessionCounter'),hardCalcLabel=$('hardCalcLabel'),hardOperationCard=$('hardOperationCard'),hardFeedback=$('hardFeedback'),hardPrimary=$('hardPrimary'),hardClear=$('hardClear'),hardNumpad=$('hardNumpad');
+  let hardSession=null,hardState=null,hardActive={kind:'answer',col:0},hardPhase='menu';
+  function hardBest(){return safeGet(HARD_KEY,{})}function saveHardBest(){if(!hardSession||hardSession.mode!=='sudden')return;const d=hardBest(),k=String(hardSession.level);d[k]=Math.max(Number(d[k]||0),hardSession.score);safeSet(HARD_KEY,d)}
+  function renderHardMenu(){const r=hardBest();hardLevelGrid.innerHTML='';HARD.forEach(spec=>{const c=document.createElement('article');c.className='hard-level-card';c.innerHTML=`<h3>HARD LVL ${spec.level}</h3><div class="hard-spec">${spec.digits} chiffres × 1 chiffre</div><div class="hard-record"><span class="hard-record-label">Record<br>Mort subite</span><span class="hard-record-value">${Number.isFinite(Number(r[String(spec.level)]))?r[String(spec.level)]:'—'}</span></div><div class="hard-actions"><button class="hard-train">🧠 Entraînement</button><button class="hard-sudden">⚡ Mort subite</button></div>`;c.querySelector('.hard-train').onclick=()=>startHard(spec,'training');c.querySelector('.hard-sudden').onclick=()=>startHard(spec,'sudden');hardLevelGrid.appendChild(c)})}
+  function openHardMenu(){closeTables(false);menuScreen.classList.add('hidden');gameScreen.classList.add('hidden');hardGame.classList.add('hidden');hardMenu.classList.remove('hidden');renderHardMenu();window.scrollTo({top:0,behavior:'smooth'})}
+  $('hardMenuBack').onclick=goMenu;$('hardGameBack').onclick=()=>{hardGame.classList.add('hidden');hardMenu.classList.remove('hidden');renderHardMenu()};
+  function startHard(spec,mode){carryMethod=document.querySelector('input[name="carryMethod"]:checked').value;hardSession={...spec,mode,score:0,completed:0};hardMenu.classList.add('hidden');hardGame.classList.remove('hidden');newHardCalc()}
+  function newHardCalc(){hardState=generateMultiplication(hardSession.digits,[2,3,4,5,6,7,8,9],true);hardPhase='answering';hardActive={kind:'answer',col:0};renderHardCalc();hardPrimary.textContent='Valider';hardClear.disabled=false;setHardEnabled(true);updateHardHeader();setHardFeedback('Commence par les unités.');focusHard('answer',0)}
+  function updateHardHeader(){hardSessionTitle.textContent=`Multiplication simple · HARD LVL ${hardSession.level}`;hardSessionMeta.textContent=`${hardSession.mode==='training'?'🧠 Entraînement':'⚡ Mort subite'} · ${hardSession.digits} chiffres × ${hardState.m}`;hardSessionScore.textContent=hardSession.mode==='sudden'?`Score ${hardSession.score}`:'Sans points';hardSessionScore.classList.toggle('no-score',hardSession.mode!=='sudden');hardSessionCounter.textContent=`Calcul ${hardSession.completed+1}`;hardCalcLabel.textContent=`Calcul ${hardSession.completed+1}`}
+  function renderHardCalc(){hardOperationCard.innerHTML='';const wrap=document.createElement('div');wrap.className='calc-operation-wrap';const op=div('hard-operation');op.style.setProperty('--cols',hardState.answerCount);op.dataset.hardOp='1';op.appendChild(div());for(let c=hardState.answerCount-1;c>=0;c--){if(c>=1&&c<hardState.count&&carryMethod==='top'){const inp=hardInput('hard-carry','carry',c);op.appendChild(inp)}else op.appendChild(div())}op.appendChild(div());for(let c=hardState.answerCount-1;c>=0;c--){const d=div('hard-digit');if(c<hardState.count)d.textContent=digitAt(hardState.a,c);op.appendChild(d)}const x=div('hard-operator');x.textContent='×';op.appendChild(x);for(let c=hardState.answerCount-1;c>=0;c--){const d=div('hard-digit');if(c===0)d.textContent=hardState.m;op.appendChild(d)}op.appendChild(div('hard-bar'));op.appendChild(div());for(let c=hardState.answerCount-1;c>=0;c--)op.appendChild(hardInput('hard-answer','answer',c));wrap.appendChild(op);if(carryMethod==='side'){const p=div('side-carry-panel');const l=div('side-carry-label');l.textContent='Report';const inp=hardInput('hard-side-carry','side',1);p.append(l,inp);wrap.appendChild(p)}hardOperationCard.appendChild(wrap)}
+  function hardInput(cls,kind,col){const i=document.createElement('input');i.type='text';i.readOnly=true;i.inputMode='none';i.maxLength=1;i.className=cls;i.dataset.kind=kind;i.dataset.col=col;i.addEventListener('focus',()=>setHardActive(i,kind,+i.dataset.col));return i}
+  function hardInputFor(kind,col){if(kind==='side')return hardOperationCard.querySelector('.hard-side-carry');return hardOperationCard.querySelector(`input[data-kind="${kind}"][data-col="${col}"]`)}
+  function setHardActive(inp,kind,col){hardOperationCard.querySelectorAll('.hard-active').forEach(x=>x.classList.remove('hard-active'));hardActive={kind,col};if(inp&&!inp.disabled){inp.classList.add('hard-active');inp.focus({preventScroll:true});inp.select()}}
+  function focusHard(kind,col){requestAnimationFrame(()=>setHardActive(hardInputFor(kind,col),kind,col))}
+  function enterHard(d){if(hardPhase!=='answering')return;const {kind,col}=hardActive,inp=hardInputFor(kind,col);if(!inp||inp.disabled)return;if(kind==='answer'){inp.value=d;hardState.answerValues[col]=d;if(col<hardState.count-1&&hardState.outgoing[col]>0){carryMethod==='top'?focusHard('carry',col+1):focusHard('side',col+1)}else if(col+1<hardState.answerCount)focusHard('answer',col+1)}else if(kind==='carry'){inp.value=d;hardState.carryValues[col]=d;focusHard('answer',col)}else{const e=String(hardState.incoming[col]);inp.value=d;if(d===e){hardState.sideCarryValues[col]=d;inp.classList.remove('hard-bad');inp.classList.add('hard-good');setTimeout(()=>focusHard('answer',col),90)}else{inp.classList.add('hard-bad');setTimeout(()=>{inp.value='';inp.classList.remove('hard-bad');focusHard('side',col)},350)}}}
+  function eraseHard(){const {kind,col}=hardActive,inp=hardInputFor(kind,col);if(!inp)return;inp.value='';if(kind==='answer')hardState.answerValues[col]='';else if(kind==='carry')hardState.carryValues[col]='';else hardState.sideCarryValues[col]=''}
+  hardNumpad.addEventListener('mousedown',e=>{if(e.target.closest('.hard-key'))e.preventDefault()});hardNumpad.addEventListener('click',e=>{const b=e.target.closest('.hard-key');if(!b)return;const k=b.dataset.key;if(/^\d$/.test(k))enterHard(k);else if(k==='back')eraseHard();else hardPrimaryAction()});
+  hardClear.onclick=()=>{if(hardPhase!=='answering')return;hardState.answerValues.fill('');hardState.carryValues.fill('');hardState.sideCarryValues.fill('');hardOperationCard.querySelectorAll('input').forEach(i=>{i.value='';i.classList.remove('hard-bad','hard-good')});focusHard('answer',0)};hardPrimary.onclick=hardPrimaryAction;
+  function evalHard(){const exp=hardState.result.split('').reverse();let filled=true,correct=true;for(let c=0;c<hardState.answerCount;c++){if(hardState.answerValues[c]==='')filled=false;if(hardState.answerValues[c]!==exp[c])correct=false}for(let c=1;c<hardState.count;c++){const e=hardState.incoming[c]>0?String(hardState.incoming[c]):'';if(carryMethod==='top'){const a=(e===''&&hardState.carryValues[c]==='0')?'':hardState.carryValues[c];if(e!==''&&a==='')filled=false;if(a!==e)correct=false}else if(e!==''&&hardState.sideCarryValues[c]!==e){filled=false;correct=false}}return{filled,correct}}
+  function markHardErrors(){const exp=hardState.result.split('').reverse();for(let c=0;c<hardState.answerCount;c++){const i=hardInputFor('answer',c);if(hardState.answerValues[c]!==exp[c]){i?.classList.add('hard-bad');if(i)i.value='';hardState.answerValues[c]=''}else i?.classList.add('hard-good')}if(carryMethod==='top'){for(let c=1;c<hardState.count;c++){const e=hardState.incoming[c]>0?String(hardState.incoming[c]):'',a=(e===''&&hardState.carryValues[c]==='0')?'':hardState.carryValues[c],i=hardInputFor('carry',c);if(a!==e){i?.classList.add('hard-bad');if(i)i.value='';hardState.carryValues[c]=''}else if(i?.value)i.classList.add('hard-good')}}}
+  function hardPrimaryAction(){if(!hardSession)return;if(hardPhase==='review'){newHardCalc();return}if(hardPhase==='ended'){hardGame.classList.add('hidden');hardMenu.classList.remove('hidden');renderHardMenu();return}const r=evalHard();if(!r.filled){setHardFeedback('Termine le calcul avant de vérifier.');return}if(r.correct){hardOperationCard.querySelectorAll('input').forEach(i=>{if(i.value)i.classList.add('hard-good')});hardSession.completed++;if(hardSession.mode==='sudden'){hardSession.score++;saveHardBest()}hardPhase='review';setHardEnabled(false);hardPrimary.textContent='Calcul suivant';setHardFeedback(hardSession.mode==='sudden'?`Correct. Score : ${hardSession.score}.`:'Correct. Calcul suivant.');updateHardHeader();return}markHardErrors();if(hardSession.mode==='sudden'){saveHardBest();hardPhase='ended';setHardEnabled(false);hardPrimary.textContent='Retour au menu HARD';setHardFeedback(`Erreur. Score final : ${hardSession.score}.`);enregistrerResultatMathas(hardSession.score,hardSession.score+1,`Hard ${hardSession.level}`,3+hardSession.level,false,true);safeSet(LAST_KEY,{label:`Hard ${hardSession.level} · Mort subite`,score:String(hardSession.score),at:new Date().toISOString(),allTables:true})}else setHardFeedback('Corrige les cases rouges, puis vérifie à nouveau.')}
+  function setHardEnabled(on){hardOperationCard.querySelectorAll('input').forEach(i=>i.disabled=!on);hardClear.disabled=!on}
+  function setHardFeedback(t){hardFeedback.textContent=t}
+
+  // theme / fullscreen
+  const themeBtn=$('themeToggleBtn'),fullBtn=$('fullscreenBtn');
+  function applyTheme(light){document.body.classList.toggle('light-mode',light);themeBtn.textContent=light?'🌙 Mode sombre':'☀️ Mode clair';try{localStorage.setItem('multi1_light',light?'1':'0')}catch{}}applyTheme(localStorage.getItem('multi1_light')==='1');themeBtn.onclick=()=>applyTheme(!document.body.classList.contains('light-mode'));fullBtn.onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch{}};
+  document.addEventListener('keydown',e=>{if(!hardGame.classList.contains('hidden')){if(/^\d$/.test(e.key)){e.preventDefault();enterHard(e.key)}else if(e.key==='Backspace'||e.key==='Delete'){e.preventDefault();eraseHard()}else if(e.key==='Enter'){e.preventDefault();hardPrimaryAction()}return}if(gameScreen.classList.contains('hidden'))return;if(/^\d$/.test(e.key)){e.preventDefault();enterDigit(e.key)}else if(e.key==='Backspace'||e.key==='Delete'){e.preventDefault();eraseActive()}else if(e.key==='Enter'){e.preventDefault();handlePrimary()}},true);
+
+  loadSettings();populateLevels();buildSlidableSelects();refreshMenuScores();refreshLastWork();
+})();
+</script>
+</body>
+</html>
