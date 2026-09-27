@@ -1041,21 +1041,60 @@ body.light-mode .num-key[data-key="backspace"]{
   100%{opacity:0;transform:translateY(-165vh)}
 }
 
+
+/* Mini démonstrations des techniques de report */
+.method-card{display:grid !important;grid-template-columns:auto minmax(0,1fr) 92px;gap:10px;align-items:center}
+.method-demo{width:92px;height:66px;border-radius:11px;border:1px solid rgba(255,255,255,.11);background:rgba(5,18,23,.58);display:grid;place-items:center;padding:4px;box-sizing:border-box}
+.method-demo-math{position:relative;width:76px;height:56px;color:#edfafa;font-weight:1000;font-size:.78rem;font-variant-numeric:tabular-nums}
+.method-demo-math .md-top{position:absolute;right:25px;top:15px;letter-spacing:5px}
+.method-demo-math .md-bottom{position:absolute;right:24px;top:31px;letter-spacing:3px}
+.method-demo-math .md-line{position:absolute;left:12px;right:15px;top:45px;height:2px;border-radius:9px;background:rgba(94,234,212,.55)}
+.method-demo-math .md-carry{position:absolute;right:48px;top:0;width:18px;height:16px;border-radius:5px;border:1px solid rgba(244,207,106,.55);display:grid;place-items:center;color:#f8dc83;background:rgba(86,66,15,.26);font-size:.58rem}
+.method-demo-math .md-side{position:absolute;right:-1px;top:18px;width:25px;height:27px;border-radius:6px;border:1px solid rgba(94,234,212,.48);display:grid;place-items:center;color:#b7f4eb;background:rgba(17,79,73,.28);font-size:.66rem}
+.method-demo-math .md-op{position:absolute;left:4px;top:29px;color:#67e8f9;font-size:.96rem}
+body.light-mode .method-demo{background:#f3fbfa;border-color:#cde3df}
+body.light-mode .method-demo-math{color:#204547}
+@media(max-width:720px){.method-card{grid-template-columns:auto minmax(0,1fr) !important}.method-demo{grid-column:2}}
+
+
+/* =========================================================
+   PROGRESSION DES NIVEAUX
+   Niveau 2 <- 8/10 ou 16/20 au niveau 1
+   Niveau 3 <- 8/10 ou 16/20 au niveau 2
+   HARD     <- 10/10 ou 20/20 aux niveaux 1, 2 ET 3
+   ========================================================= */
+.slide-option.progress-locked,
+.level-option.progress-locked,
+.slide-option:disabled,
+.level-option:disabled{
+  color:#73808d !important;
+  opacity:.48 !important;
+  cursor:not-allowed !important;
+  filter:saturate(.35) !important;
+  background:rgba(90,100,110,.07) !important;
+}
+.slide-option.hard-option.progress-locked,
+.level-option.hard.progress-locked{
+  color:#88777c !important;
+  background:rgba(83,57,63,.13) !important;
+}
+select option:disabled{color:#777 !important}
+
 </style>
 </head>
 <body>
 <button class="fullscreen-btn" id="fullscreenBtn" type="button">⛶ Plein écran</button>
 <button class="theme-toggle-btn" id="themeToggleBtn" type="button">☀️ Mode clair</button>
 <main class="app">
-<header><h1>Multiplication simple</h1><div class="subtitle-row"><span class="app-version">v1.1</span></div></header>
+<header><h1>Multiplication simple</h1><div class="subtitle-row"><span class="app-version">v1.3</span></div></header>
 
 <section id="menuScreen" class="panel menu-panel">
   <div class="settings-grid">
     <section class="settings-box">
       <h3>Réglages des reports</h3><p>Choisis ta méthode de report.</p>
       <div class="method-options">
-        <label class="method-option"><input type="radio" name="carryMethod" value="top" checked><span class="method-card"><span class="method-icon">↖</span><span><span class="method-name">Report au-dessus</span><span class="method-hint">La retenue est écrite au-dessus du chiffre suivant.</span></span></span></label>
-        <label class="method-option"><input type="radio" name="carryMethod" value="side"><span class="method-card"><span class="method-icon">▣</span><span><span class="method-name">Report sur le côté</span><span class="method-hint">La retenue est écrite dans une case à droite du calcul.</span></span></span></label>
+        <label class="method-option"><input type="radio" name="carryMethod" value="top" checked><span class="method-card"><span class="method-icon">↖</span><span><span class="method-name">Report au-dessus</span><span class="method-hint">La retenue est écrite au-dessus du chiffre suivant.</span></span><span class="method-demo" aria-hidden="true"><span class="method-demo-math"><span class="md-carry">5</span><span class="md-top">58</span><span class="md-bottom">7</span><span class="md-op">×</span><span class="md-line"></span></span></span></span></label>
+        <label class="method-option"><input type="radio" name="carryMethod" value="side"><span class="method-card"><span class="method-icon">▣</span><span><span class="method-name">Report sur le côté</span><span class="method-hint">La retenue est écrite dans une case à droite du calcul.</span></span><span class="method-demo" aria-hidden="true"><span class="method-demo-math"><span class="md-top">58</span><span class="md-bottom">7</span><span class="md-op">×</span><span class="md-line"></span><span class="md-side">5</span></span></span></span></label>
       </div>
     </section>
     <section class="settings-box">
@@ -1658,7 +1697,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
     if(isRecord)showRecordCelebration(`Score ${session.score}`);
     else showFinishCelebration(`Score ${session.score}`)
   }
-  function finishClassic(){
+  function finishClassic(){window.__progressionUnlockRecord?.(session.level,session.score,session.total);
     phase='finished';setInputsEnabled(false);primaryBtn.textContent='Retour au menu';
     setFeedback(`Série terminée : ${session.score} / ${session.total}.`,'ok');
     const cur=scoreStore(CLASSIC_KEY)[scoreKey()];
@@ -1913,5 +1952,132 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
   loadSettings();populateLevels();buildSlidableSelects();refreshMenuScores();refreshLastWork();
 })();
 </script>
+
+<script>
+(()=>{
+  const PROGRESSION_KEY='mathas_progression_multiplication_simple_v1';
+  const empty=()=>({level2:false,level3:false,perfect1:false,perfect2:false,perfect3:false,hard:false});
+  function loadProgression(){
+    try{
+      const d=JSON.parse(localStorage.getItem(PROGRESSION_KEY));
+      const p=d&&typeof d==='object'?{...empty(),...d}:empty();
+      // HARD dépend désormais uniquement d'un sans-faute en 10 ou 20 calculs
+      // obtenu au moins une fois dans chacun des trois niveaux normaux.
+      p.hard=!!(p.perfect1&&p.perfect2&&p.perfect3);
+      return p
+    }catch{return empty()}
+  }
+  function saveProgression(d){try{localStorage.setItem(PROGRESSION_KEY,JSON.stringify(d))}catch{}}
+  function unlocked(level,p=loadProgression()){
+    if(level===1)return true;
+    if(level===2)return !!p.level2;
+    if(level===3)return !!p.level3;
+    return false
+  }
+  function qualifying(score,total){
+    score=Number(score);total=Number(total);
+    return (total===10&&score>=8)||(total===20&&score>=16)
+  }
+  function perfectQualifying(score,total){
+    score=Number(score);total=Number(total);
+    return (total===10||total===20)&&score===total
+  }
+  window.__progressionUnlockRecord=(level,score,total)=>{
+    level=Number(level);score=Number(score);total=Number(total);
+    const p=loadProgression();let changed=false;
+
+    // Les niveaux normaux gardent la règle 8/10 ou 16/20.
+    if(qualifying(score,total)){
+      if(level===1&&!p.level2){p.level2=true;changed=true}
+      else if(level===2&&!p.level3){p.level3=true;changed=true}
+    }
+
+    // Un 4/4 ne compte jamais pour le HARD : seuls 10/10 et 20/20 comptent.
+    if(level>=1&&level<=3&&perfectQualifying(score,total)){
+      const key=`perfect${level}`;
+      if(!p[key]){p[key]=true;changed=true}
+    }
+
+    const hardNow=!!(p.perfect1&&p.perfect2&&p.perfect3);
+    if(p.hard!==hardNow){p.hard=hardNow;changed=true}
+
+    if(changed){saveProgression(p);refreshProgressionLocks()}
+    return changed
+  };
+
+  function levelFromText(t){const m=String(t||'').match(/Niveau\s*([123])/i);return m?Number(m[1]):null}
+  function normalLabel(level,isLocked){return `Niveau ${level}${isLocked?' (bloqué)':''}`}
+  function hardLabel(isLocked){return isLocked?'⚠ HARD (bloqué)':'⚠ Activer HARD'}
+
+  function refreshSelect(sel,p){
+    if(!sel)return;
+    const opts=[...sel.options],normal=opts.filter(o=>levelFromText(o.textContent));
+    if(normal.length<3)return;
+    normal.forEach(o=>{
+      const level=levelFromText(o.textContent),lock=!unlocked(level,p);
+      o.disabled=lock;o.textContent=normalLabel(level,lock)
+    });
+    const h=opts.find(o=>o.value==='__hard__'||/HARD/i.test(o.textContent));
+    if(h){h.disabled=!p.hard;h.textContent=hardLabel(!p.hard)}
+    const selected=opts.find(o=>o.value===sel.value);
+    if(selected?.disabled){
+      const target=normal.filter(o=>!o.disabled).at(-1)||normal[0];
+      if(target){sel.value=target.value;sel.dispatchEvent(new Event('change',{bubbles:true}))}
+    }
+    const wrap=sel.closest('.slide-select-wrap');
+    if(wrap){
+      const buttons=[...wrap.querySelectorAll('.slide-option:not(.hard-option)')];
+      buttons.forEach((b,i)=>{
+        let level=null;
+        if(b.dataset.value){const o=opts.find(x=>x.value===b.dataset.value);level=levelFromText(o?.textContent)}
+        if(!level)level=i+1;
+        if(level<1||level>3)return;
+        const lock=!unlocked(level,p);
+        b.disabled=lock;b.classList.toggle('progress-locked',lock);b.textContent=normalLabel(level,lock);
+        b.title=lock?'Débloque ce niveau avec au moins 8/10 ou 16/20 au niveau précédent.':''
+      });
+      const hb=wrap.querySelector('.hard-option');
+      if(hb){hb.disabled=!p.hard;hb.classList.toggle('progress-locked',!p.hard);hb.textContent=hardLabel(!p.hard);hb.title=!p.hard?'Débloque HARD avec 10/10 ou 20/20 aux Niveaux 1, 2 et 3.':''}
+      const trigger=wrap.querySelector('.slide-select-button');
+      if(trigger){const o=opts.find(x=>x.value===sel.value);if(o)trigger.textContent=o.textContent}
+    }
+  }
+
+  function refreshMixed(p){
+    const sel=document.getElementById('levelSelect');
+    if(!sel)return;
+    [...sel.options].forEach(o=>{
+      const level=levelFromText(o.textContent);if(!level)return;
+      const lock=!unlocked(level,p);o.disabled=lock;o.textContent=normalLabel(level,lock)
+    });
+    if(!unlocked(Number(sel.value),p)){
+      const allowed=[...sel.options].filter(o=>!o.disabled).at(-1);
+      if(allowed)sel.value=allowed.value
+    }
+    const menu=document.getElementById('levelMenu');
+    if(menu){
+      [...menu.querySelectorAll('.level-option:not(.hard)')].forEach((b,i)=>{
+        const level=i+1,lock=!unlocked(level,p);b.disabled=lock;b.classList.toggle('progress-locked',lock);b.textContent=normalLabel(level,lock);b.title=lock?'Débloque ce niveau avec au moins 8/10 ou 16/20 au niveau précédent.':''
+      });
+      const hb=menu.querySelector('.level-option.hard');
+      if(hb){hb.disabled=!p.hard;hb.classList.toggle('progress-locked',!p.hard);hb.textContent=hardLabel(!p.hard);hb.title=!p.hard?'Débloque HARD avec 10/10 ou 20/20 aux Niveaux 1, 2 et 3.':''}
+    }
+    const btn=document.getElementById('levelBtn');if(btn)btn.textContent=`Niveau ${sel.value}`;
+    // Synchronise les réglages internes des applis qui écoutent le select.
+    sel.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+
+  function refreshProgressionLocks(){
+    const p=loadProgression();
+    const selects=[...document.querySelectorAll('#menuScreen select')].filter(s=>[...s.options].filter(o=>levelFromText(o.textContent)).length>=3);
+    selects.forEach(s=>refreshSelect(s,p));
+    refreshMixed(p)
+  }
+  window.__refreshProgressionLocks=refreshProgressionLocks;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(refreshProgressionLocks,0));
+  else setTimeout(refreshProgressionLocks,0);
+})();
+</script>
+
 </body>
 </html>
