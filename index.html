@@ -1276,12 +1276,47 @@ body.light-mode .master-mode-reset-note{color:#8b5b54}
 }
 </style>
 
+
+<style id="menuCornerControlsPatch">
+.fullscreen-btn,
+.theme-toggle-btn{
+  position:absolute !important;
+  left:auto !important;
+  right:14px !important;
+  z-index:80 !important;
+}
+.fullscreen-btn{top:12px !important}
+.theme-toggle-btn{top:56px !important}
+
+.top-fixed{
+  position:absolute !important;
+  top:12px !important;
+  left:auto !important;
+  right:14px !important;
+  z-index:80 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-end !important;
+  gap:6px !important;
+}
+
+.app{padding-top:18px !important}
+header{padding-right:175px !important}
+
+@media(max-width:680px){
+  .fullscreen-btn{top:8px !important;right:8px !important}
+  .theme-toggle-btn{top:50px !important;right:8px !important}
+  .top-fixed{top:8px !important;right:8px !important}
+  header{padding-right:145px !important}
+}
+</style>
+
 </head>
 <body>
 <button class="fullscreen-btn" id="fullscreenBtn" type="button">⛶ Plein écran</button>
-<button class="theme-toggle-btn" id="themeToggleBtn" type="button">☀️ Mode clair</button>
+<button class="theme-toggle-btn" id="themeToggleBtn" type="button">Mode clair</button>
 <main class="app">
-<header><h1>Multiplication simple</h1><div class="subtitle-row"><span class="app-version">v1.9</span></div></header>
+<header><h1>Multiplication simple</h1><div class="subtitle-row"><span class="app-version">v1.10</span></div></header>
 
 <section id="menuScreen" class="panel menu-panel">
   <div class="settings-grid">
@@ -2141,7 +2176,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
 
   // theme / fullscreen
   const themeBtn=$('themeToggleBtn'),fullBtn=$('fullscreenBtn');
-  function applyTheme(light){document.body.classList.toggle('light-mode',light);themeBtn.textContent=light?'🌙 Mode sombre':'☀️ Mode clair';try{localStorage.setItem('multi1_light',light?'1':'0')}catch{}}applyTheme(localStorage.getItem('multi1_light')==='1');themeBtn.onclick=()=>applyTheme(!document.body.classList.contains('light-mode'));fullBtn.onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch{}};
+  function applyTheme(light){document.body.classList.toggle('light-mode',light);themeBtn.textContent=light?'Mode sombre':'Mode clair';try{localStorage.setItem('multi1_light',light?'1':'0')}catch{}}applyTheme(localStorage.getItem('multi1_light')==='1');themeBtn.onclick=()=>applyTheme(!document.body.classList.contains('light-mode'));fullBtn.onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch{}};
   document.addEventListener('keydown',e=>{if(!hardGame.classList.contains('hidden')){if(/^\d$/.test(e.key)){e.preventDefault();enterHard(e.key)}else if(e.key==='Backspace'||e.key==='Delete'){e.preventDefault();eraseHard()}else if(e.key==='Enter'){e.preventDefault();hardPrimaryAction()}return}if(gameScreen.classList.contains('hidden'))return;if(/^\d$/.test(e.key)){e.preventDefault();enterDigit(e.key)}else if(e.key==='Backspace'||e.key==='Delete'){e.preventDefault();eraseActive()}else if(e.key==='Enter'){e.preventDefault();handlePrimary()}},true);
 
   loadSettings();populateLevels();buildSlidableSelects();refreshMenuScores();refreshLastWork();
