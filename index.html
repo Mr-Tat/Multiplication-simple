@@ -3,7 +3,7 @@
 <!--
 MATH’AS CLEAN ARCHITECTURE — Multiplication à 1 chiffre / clean-v1
 Reference behavior + appearance: multiplication_simple_v3.2.1.html
-Visible version: V4 Gold.
+Visible version: V4.1 beta4.
 This clean file centralizes app-specific configuration while preserving the V3.2.1 behavior.
 -->
 <html lang="fr">
@@ -4240,6 +4240,43 @@ body.light-mode .tables-aid-active{
   #hardTablesBtn,#hardGuideBtn{padding-left:9px !important;padding-right:9px !important;}
 }
 </style>
+
+<style id="mathas-tens-first-v1">.tens-first-option{display:flex;align-items:center;gap:11px;min-height:54px;padding:11px 13px;border:1px solid rgba(125,175,205,.24);border-radius:14px;background:rgba(255,255,255,.045);cursor:pointer;font-weight:900;line-height:1.25;margin-top:12px}.tens-first-option input{width:22px;height:22px;flex:0 0 22px;margin:0;accent-color:#2dd4bf;cursor:pointer}.tens-first-copy{display:grid;gap:2px}.tens-first-title{font-size:.96rem;color:#effffb}.tens-first-hint{font-size:.74rem;font-weight:750;color:#99bbb5}body.light-mode .tens-first-option{background:rgba(255,255,255,.78);border-color:#bddad5}.light-mode .tens-first-title{color:#244a47}.light-mode .tens-first-hint{color:#5e7b77}</style>
+<style id="mathas-tables-large-select-first-v1">
+.tables-panel{width:258px !important;padding:14px 13px !important;overflow-y:auto !important;}
+.table-picker{font-size:1.02rem !important;min-height:44px !important;margin-bottom:8px !important;}
+.table-list{gap:2px !important;}
+.table-row{grid-template-columns:max-content 24px max-content !important;column-gap:7px !important;padding:5px 5px !important;font-size:1.60rem !important;line-height:1.05 !important;min-height:36px !important;}
+.table-eq{font-size:.95em !important;}
+.table-prompt{min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;padding:4px 8px 14px;text-align:center;color:#d8f7f3;font-size:1.18rem;font-weight:950;line-height:1.2;}
+.table-prompt-arrow{font-size:3rem;line-height:.9;color:#67e8f9;filter:drop-shadow(0 0 8px rgba(103,232,249,.28));animation:mathasTablePromptArrow 1s ease-in-out infinite alternate;}
+@keyframes mathasTablePromptArrow{from{transform:translateY(7px)}to{transform:translateY(0)}}
+body.light-mode .table-prompt{color:#24585b !important;}
+body.light-mode .table-prompt-arrow{color:#167f8f !important;filter:none !important;}
+body.tables-open #gameScreen{margin-left:276px !important;width:calc(100% - 276px) !important;}
+body.tables-open #hardGame{margin-left:276px !important;width:calc(100% - 276px) !important;}
+@media(max-width:1020px){.tables-panel{width:226px !important;}body.tables-open #gameScreen,body.tables-open #hardGame{margin-left:0 !important;width:100% !important;}}
+@media(max-width:620px){.tables-panel{left:4px !important;width:214px !important;padding:10px 9px !important;}.table-row{font-size:1.45rem !important;column-gap:5px !important;}}
+</style>
+
+<style id="mathas-tens-first-highlight-v2">
+#menuScreen .settings-box .tens-first-option{
+  margin-top:24px !important;
+  background:linear-gradient(180deg,rgba(18,126,116,.88) 0%,rgba(10,91,84,.92) 100%) !important;
+  border-color:#72e8da !important;
+  box-shadow:0 0 0 3px rgba(45,212,191,.10),inset 0 1px 0 rgba(255,255,255,.09) !important;
+}
+#menuScreen .settings-box .tens-first-title{color:#fff !important;}
+#menuScreen .settings-box .tens-first-hint{color:#d8fff9 !important;}
+#menuScreen .settings-box .tens-first-option input{accent-color:#99fff3 !important;}
+body.light-mode #menuScreen .settings-box .tens-first-option{
+  background:linear-gradient(180deg,#d8fff8 0%,#bef6ee 100%) !important;
+  border-color:#1e9e8f !important;
+  box-shadow:0 0 0 3px rgba(24,169,159,.10) !important;
+}
+body.light-mode #menuScreen .settings-box .tens-first-title{color:#0d5f58 !important;}
+body.light-mode #menuScreen .settings-box .tens-first-hint{color:#2f766f !important;}
+</style>
 </head>
 <body>
 <main class="app">
@@ -4250,7 +4287,7 @@ body.light-mode .tables-aid-active{
 <button class="theme-toggle-btn" id="themeToggleBtn" type="button">Mode clair</button>
 </div>
 </div>
-<header><h1>Multiplication à 1 chiffre</h1><div class="subtitle-row"><span class="app-version">V4 Gold</span></div>
+<header><h1>Multiplication à 1 chiffre</h1><div class="subtitle-row"><span class="app-version">V4.1 beta4</span></div>
 </header>
 <section class="panel menu-panel" id="menuScreen">
 <div class="settings-grid mathas-menu-zone mathas-menu-zone-settings">
@@ -4282,6 +4319,7 @@ body.light-mode .tables-aid-active{
 <button class="mult-chip active" data-mult="2" type="button">2</button><button class="mult-chip active" data-mult="3" type="button">3</button><button class="mult-chip active" data-mult="4" type="button">4</button><button class="mult-chip active" data-mult="5" type="button">5</button><button class="mult-chip active" data-mult="6" type="button">6</button><button class="mult-chip active" data-mult="7" type="button">7</button><button class="mult-chip active" data-mult="8" type="button">8</button><button class="mult-chip active" data-mult="9" type="button">9</button>
 </div>
 <p class="mult-hint">Tu peux par exemple ne garder que 2, 3 et 5. En HARD, les multiplicateurs 2 à 9 sont toujours tous utilisés.</p>
+<label class="tens-first-option" for="tensFirstToggle"><input id="tensFirstToggle" type="checkbox"/><span class="tens-first-copy"><span class="tens-first-title">Écrire les dizaines d’abord</span><span class="tens-first-hint">En cas de report : dizaine d’abord, puis unité.</span></span></label>
 </section>
 </div>
 <div class="mathas-menu-zone mathas-menu-zone-launch">
@@ -4376,7 +4414,7 @@ body.light-mode .tables-aid-active{
 </div>
 </section>
 </main>
-<script>window.MathasAppConfig={"appId":"multiplication-simple","title":"Multiplication à 1 chiffre","family":"multiplication","visibleVersion":"V4 Gold","assets":{"favicon":"https://jftzuslpelgzbdrftszw.supabase.co/storage/v1/object/public/mathas-images/logos/logo-m-1791065253498-qussoz.png","wordmark":"https://jftzuslpelgzbdrftszw.supabase.co/storage/v1/object/public/mathas-images/logos/logo-mot-1791065255634-jznxux.png"},"storage":{"normal":{"settings":"multi1_settings_v1","classic":"multi1_classic_v1","sudden":"multi1_sudden_v1","tablesUsage":"multi1_tables_usage_v1"},"theme":"multi1_light","hardRecords":"multi1_hard_sudden_v1","hardAidUsage":"multi1_hard_tables_usage_v1","hardThree":"multi1_hard_three_v1","lastWork":"multi1_last_work","progression":"mathas_progression_multiplication_simple_v1","aids":"mathas_aids_multiplication_simple_v1","masterReset":["multi1_classic_v1","multi1_last_work","mathas_progression_multiplication_simple_v1","multi1_hard_three_v1","multi1_tables_usage_v1"]},"aids":{"defaults":{"tables":true},"controls":{"tables":{"button":"tablesBtn","hardButton":"hardTablesBtn","panel":"tablesPanel"}}},"normal":{"levelDigits":{"1":3,"2":5,"3":7}},"hard":{"type":"multiplication-simple","title":"Multiplication à 1 chiffre","levels":[{"level":1,"digits":10},{"level":2,"digits":12},{"level":3,"digits":16}],"hardSelects":["trainingLevel"]},"layers":{"L2":"#menuScreen.menu-panel, #menuScreen .mathas-menu-zone, #gameScreen > .card","L3":".calc-box, .mode-card, .settings-box, .method-card, .choice-card, .level-wrap, .numpad, .hard-numpad, .instruction, .session-bar","L4":"button, input, select, .digit, .digit-cell, .operator, .answer-input, .carry-input, .side-carry-input"}};</script>
+<script>window.MathasAppConfig={"appId":"multiplication-simple","title":"Multiplication à 1 chiffre","family":"multiplication","visibleVersion":"V4.1 beta4","assets":{"favicon":"https://jftzuslpelgzbdrftszw.supabase.co/storage/v1/object/public/mathas-images/logos/logo-m-1791065253498-qussoz.png","wordmark":"https://jftzuslpelgzbdrftszw.supabase.co/storage/v1/object/public/mathas-images/logos/logo-mot-1791065255634-jznxux.png"},"storage":{"normal":{"settings":"multi1_settings_v1","classic":"multi1_classic_v1","sudden":"multi1_sudden_v1","tablesUsage":"multi1_tables_usage_v1"},"theme":"multi1_light","hardRecords":"multi1_hard_sudden_v1","hardAidUsage":"multi1_hard_tables_usage_v1","hardThree":"multi1_hard_three_v1","lastWork":"multi1_last_work","progression":"mathas_progression_multiplication_simple_v1","aids":"mathas_aids_multiplication_simple_v1","masterReset":["multi1_classic_v1","multi1_last_work","mathas_progression_multiplication_simple_v1","multi1_hard_three_v1","multi1_tables_usage_v1"]},"aids":{"defaults":{"tables":true},"controls":{"tables":{"button":"tablesBtn","hardButton":"hardTablesBtn","panel":"tablesPanel"}}},"normal":{"levelDigits":{"1":3,"2":5,"3":7}},"hard":{"type":"multiplication-simple","title":"Multiplication à 1 chiffre","levels":[{"level":1,"digits":10},{"level":2,"digits":12},{"level":3,"digits":16}],"hardSelects":["trainingLevel"]},"layers":{"L2":"#menuScreen.menu-panel, #menuScreen .mathas-menu-zone, #gameScreen > .card","L3":".calc-box, .mode-card, .settings-box, .method-card, .choice-card, .level-wrap, .numpad, .hard-numpad, .instruction, .session-bar","L4":"button, input, select, .digit, .digit-cell, .operator, .answer-input, .carry-input, .side-carry-input"}};</script>
 <script>
 /* ---------- Math'as ---------- */
 function estMeilleurResultat(nouveau,ancien){
@@ -4422,7 +4460,8 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
   const hardTablesBtn=$('hardTablesBtn');
   if(tablesPanel&&tablesPanel.parentElement!==document.body)document.body.appendChild(tablesPanel);
   const multiplierPicker=$('multiplierPicker');
-  let selectedCount=10,selectedMultipliers=new Set([2,3,4,5,6,7,8,9]),carryMethod='top';
+  const tensFirstToggle=$('tensFirstToggle');
+  let selectedCount=10,selectedMultipliers=new Set([2,3,4,5,6,7,8,9]),carryMethod='top',tensFirst=false;
   let session=null,states=[],active={kind:'answer',calc:0,col:0},phase='menu',tablesOpen=false;
 
   const safeGet=(k,d)=>{try{const x=JSON.parse(localStorage.getItem(k));return x??d}catch{return d}};
@@ -4431,14 +4470,14 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
   const isAllMultipliers=()=>[2,3,4,5,6,7,8,9].every(n=>selectedMultipliers.has(n));
 
   function loadSettings(){
-    const s=safeGet(SETTINGS_KEY,{});carryMethod=s.carryMethod==='side'?'side':'top';
+    const s=safeGet(SETTINGS_KEY,{});carryMethod=s.carryMethod==='side'?'side':'top';tensFirst=!!s.tensFirst;window.__mathasTensFirst=tensFirst;if(tensFirstToggle)tensFirstToggle.checked=tensFirst;
     const list=Array.isArray(s.multipliers)?s.multipliers.map(Number).filter(n=>n>=2&&n<=9):[2,3,4,5,6,7,8,9];if(list.length)selectedMultipliers=new Set(list);
     selectedCount=[4,10,20].includes(+s.count)?+s.count:10;
     const level=[1,2,3].includes(+s.level)?+s.level:1;
     levelSelects.forEach(x=>x.dataset.initialLevel=String(level));
     document.querySelector(`input[name="carryMethod"][value="${carryMethod}"]`).checked=true;syncMultiplierUI();syncCountUI()
   }
-  function saveSettings(level=null){safeSet(SETTINGS_KEY,{carryMethod,multipliers:[...selectedMultipliers].sort((a,b)=>a-b),count:selectedCount,level:level??currentNormalLevel()})}
+  function saveSettings(level=null){window.__mathasTensFirst=!!tensFirst;safeSet(SETTINGS_KEY,{carryMethod,multipliers:[...selectedMultipliers].sort((a,b)=>a-b),count:selectedCount,level:level??currentNormalLevel(),tensFirst:!!tensFirst})}
   function currentNormalLevel(){const v=+($('classicLevel').value||1);return [1,2,3].includes(v)?v:1}
 
   function populateLevels(){
@@ -4487,6 +4526,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
     saveSettings()
   });
   document.querySelectorAll('input[name="carryMethod"]').forEach(r=>r.addEventListener('change',()=>{carryMethod=document.querySelector('input[name="carryMethod"]:checked').value;saveSettings()}));
+  if(tensFirstToggle)tensFirstToggle.addEventListener('change',()=>{tensFirst=!!tensFirstToggle.checked;window.__mathasTensFirst=tensFirst;saveSettings()});
   document.querySelectorAll('.classic-count-btn').forEach(b=>b.addEventListener('click',()=>{
     selectedCount=+b.dataset.count;
     syncCountUI();
@@ -4529,7 +4569,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
 
   function makePair(){
     clearMultiplicationHint();hintBtn._step=0;hintBtn._key=null;
-    states=[generateMultiplication(session.maxDigits,session.multipliers),generateMultiplication(session.maxDigits,session.multipliers)];active={kind:'answer',calc:0,col:0};calculationsPair.innerHTML='';states.forEach((s,i)=>renderCalc(s,i));phase='answering';primaryBtn.textContent='Valider';resetBtn.disabled=false;hintBtn.classList.remove('hidden');hintBtn.textContent=session.mode==='training'?'🧭 Guide':'💡 Indice';updateInstruction();updateBar();setFeedback('Réponds aux deux calculs, puis vérifie.','');focusAnswer(0,0);updateSecondDim();requestAnimationFrame(updateScrollArrow)
+    states=[generateMultiplication(session.maxDigits,session.multipliers),generateMultiplication(session.maxDigits,session.multipliers)];active={kind:'answer',calc:0,col:0};calculationsPair.innerHTML='';states.forEach((s,i)=>renderCalc(s,i));phase='answering';primaryBtn.textContent='Valider';resetBtn.disabled=false;hintBtn.classList.remove('hidden');hintBtn.textContent=session.mode==='training'?'🧭 Guide':'💡 Indice';updateInstruction();updateBar();setFeedback('Réponds aux deux calculs, puis vérifie.','');focusMulColumn(0,0);updateSecondDim();requestAnimationFrame(updateScrollArrow)
   }
   function groupSep(el,c){if(!el)return;el.classList.add('group-shift');el.style.setProperty('--group-step',Math.floor(c/3))}
   function renderCalc(s,i){
@@ -4739,6 +4779,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
     }
   }
   function focusSide(i,c){const inp=sideFor(i);if(inp){inp.value='';inp.classList.remove('bad','good');requestAnimationFrame(()=>setActive('side',i,c,inp))}}
+  function focusMulColumn(i,c){const s=states[i];if(!s||s.solved)return;if(tensFirst&&c<s.count-1&&s.outgoing[c]>0){const target=c+1;if(carryMethod==='top'&&s.carryValues[target]!==String(s.outgoing[c])){focusCarry(i,target);return}if(carryMethod==='side'&&s.sideCarryValues[target]!==String(s.outgoing[c])){focusSide(i,target);return}}focusAnswer(i,c)}
   function nextMissingSideCarry(i,start=1){const s=states[i];for(let c=Math.max(1,start);c<s.count;c++)if(s.incoming[c]>0&&s.sideCarryValues[c]!==String(s.incoming[c]))return c;return null}
   function onKey(e){if(/^\d$/.test(e.key)){e.preventDefault();enterDigit(e.key)}else if(e.key==='Backspace'||e.key==='Delete'){e.preventDefault();eraseActive()}else if(e.key==='Enter'){e.preventDefault();handlePrimary()}}
   function enterDigit(d){if(phase!=='answering'||!active)return;if(active.kind==='answer')setAnswerDigit(active.calc,active.col,d);else if(active.kind==='carry')setTopCarry(active.calc,active.col,d);else setSideCarry(active.calc,active.col,d)}
@@ -4747,22 +4788,14 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
     inp.value=d;inp.classList.remove('incorrect');s.answerValues[c]=d;
     const wh=opFor(i)?.querySelector(`[data-wrong="${c}"]`);if(wh)wh.textContent='';
     if(carryMethod==='side'&&c>=1)markSideCarryUsed(i,c);
-    if(c<s.count-1&&s.outgoing[c]>0){
-      carryMethod==='top'?focusCarry(i,c+1):focusSide(i,c+1)
-    }else if(c+1<s.answerCount)focusAnswer(i,c+1);
+    if(!tensFirst&&c<s.count-1&&s.outgoing[c]>0){carryMethod==='top'?focusCarry(i,c+1):focusSide(i,c+1)}
+    else if(c+1<s.answerCount)focusMulColumn(i,c+1);
     updateSecondDim();
     autoAdvanceAfterCalc(i)
   }
-  function setTopCarry(i,c,d){const s=states[i],inp=carryFor(i,c);if(!inp||inp.disabled)return;inp.value=d;inp.classList.remove('bad');s.carryValues[c]=d;focusAnswer(i,c)}
-  function setSideCarry(i,c,d){const s=states[i],inp=sideFor(i);if(!inp||inp.disabled)return;const expected=String(s.incoming[c]);if(d===expected){s.sideCarryValues[c]=d;inp.value=d;inp.classList.remove('bad');inp.classList.add('good');setTimeout(()=>focusAnswer(i,c),100)}else{s.firstTry=false;inp.value=d;inp.classList.add('bad');const h=inp.parentElement.querySelector('.side-carry-history');if(h)h.textContent=`✕ ${d}`;setTimeout(()=>{if(active.kind==='side'&&active.calc===i&&active.col===c){inp.value='';inp.classList.remove('bad');inp.focus({preventScroll:true})}},420)}}
-  function mathasMulEntrySequence(s,calc){
-    const seq=[];
-    for(let c=0;c<s.answerCount;c++){
-      if(c>=1&&c<s.count&&s.incoming[c]>0)seq.push({kind:carryMethod==='top'?'carry':'side',calc,col:c});
-      seq.push({kind:'answer',calc,col:c})
-    }
-    return seq
-  }
+  function setTopCarry(i,c,d){const s=states[i],inp=carryFor(i,c);if(!inp||inp.disabled)return;inp.value=d;inp.classList.remove('bad');s.carryValues[c]=d;tensFirst&&c>0?focusAnswer(i,c-1):focusAnswer(i,c)}
+  function setSideCarry(i,c,d){const s=states[i],inp=sideFor(i);if(!inp||inp.disabled)return;const expected=String(s.incoming[c]);if(d===expected){s.sideCarryValues[c]=d;inp.value=d;inp.classList.remove('bad');inp.classList.add('good');setTimeout(()=>tensFirst&&c>0?focusAnswer(i,c-1):focusAnswer(i,c),100)}else{s.firstTry=false;inp.value=d;inp.classList.add('bad');const h=inp.parentElement.querySelector('.side-carry-history');if(h)h.textContent=`✕ ${d}`;setTimeout(()=>{if(active.kind==='side'&&active.calc===i&&active.col===c){inp.value='';inp.classList.remove('bad');inp.focus({preventScroll:true})}},420)}}
+  function mathasMulEntrySequence(s,calc){const seq=[];for(let c=0;c<s.answerCount;c++){if(tensFirst){if(c<s.count-1&&s.outgoing[c]>0)seq.push({kind:carryMethod==='top'?'carry':'side',calc,col:c+1});seq.push({kind:'answer',calc,col:c})}else{seq.push({kind:'answer',calc,col:c});if(c<s.count-1&&s.outgoing[c]>0)seq.push({kind:carryMethod==='top'?'carry':'side',calc,col:c+1})}}return seq}
   function mathasMulEntryValue(s,t){return t.kind==='answer'?(s.answerValues[t.col]||''):t.kind==='carry'?(s.carryValues[t.col]||''):(s.sideCarryValues[t.col]||'')}
   function mathasMulSame(a,b){return a&&b&&a.kind===b.kind&&a.calc===b.calc&&a.col===b.col}
   function mathasMulClearFocus(t){
@@ -4789,23 +4822,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
   function evaluate(i){const s=states[i],exp=expectedDigits(s);let filled=true,correct=true;for(let c=0;c<s.answerCount;c++){if(s.answerValues[c]==='')filled=false;if(s.answerValues[c]!==exp[c])correct=false}for(let c=1;c<s.count;c++){const e=s.incoming[c]>0?String(s.incoming[c]):'';if(carryMethod==='top'){const raw=s.carryValues[c],act=(e===''&&raw==='0')?'':raw;if(e!==''&&act==='')filled=false;if(act!==e)correct=false}else if(e!==''&&s.sideCarryValues[c]!==e){filled=false;correct=false}}return{filled,correct}}
   function markErrors(i){const s=states[i],exp=expectedDigits(s);s.firstTry=false;for(let c=0;c<s.answerCount;c++){const inp=answerFor(i,c);if(s.answerValues[c]!==exp[c]){if(s.answerValues[c]!=='')s.wrongHistory[c]=s.answerValues[c];const wh=opFor(i)?.querySelector(`[data-wrong="${c}"]`);if(wh)wh.textContent=s.wrongHistory[c];s.answerValues[c]='';if(inp){inp.value='';inp.classList.add('incorrect')}}}if(carryMethod==='top'){for(let c=1;c<s.count;c++){const e=s.incoming[c]>0?String(s.incoming[c]):'',raw=s.carryValues[c],act=(e===''&&raw==='0')?'':raw;if(act!==e){const inp=carryFor(i,c),wh=opFor(i)?.querySelector(`[data-carry-wrong="${c}"]`);if(raw!=='')s.carryWrong[c]=raw;if(wh)wh.textContent=s.carryWrong[c];s.carryValues[c]='';if(inp){inp.value='';inp.classList.add('bad')}}}}}
   function lockCalc(i){const s=states[i];s.solved=true;const box=calculationsPair.querySelector(`.calc-box[data-calc="${i}"]`);box.querySelectorAll('input').forEach(x=>{x.disabled=true;x.classList.remove('incorrect','bad','active-entry');if(x.value)x.classList.add('correct','good')});status(i,'Correct','ok');updateSecondDim()}
-  function firstTargetInCalc(i){
-    const s=states[i];
-    if(!s||s.solved)return null;
-    for(let c=0;c<s.answerCount;c++){
-      if(s.answerValues[c]==='')return{kind:'answer',i,c}
-    }
-    for(let c=1;c<s.count;c++){
-      const expected=s.incoming[c]>0?String(s.incoming[c]):'';
-      if(carryMethod==='top'&&expected!==''&&s.carryValues[c]!==expected){
-        return{kind:'carry',i,c}
-      }
-      if(carryMethod==='side'&&expected!==''&&s.sideCarryValues[c]!==expected){
-        return{kind:'side',i,c}
-      }
-    }
-    return null
-  }
+  function firstTargetInCalc(i){const s=states[i];if(!s||s.solved)return null;for(const target of mathasMulEntrySequence(s,i)){if(mathasMulEntryValue(s,target)==='')return{kind:target.kind,i:target.calc,c:target.col}}return null}
   function calcFilled(i){
     return !!states[i]&&evaluate(i).filled
   }
@@ -4816,7 +4833,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
     setFeedback('Calcul 1 terminé. Passe au calcul 2, ou appuie sur Valider pour vérifier le calcul 1.','info');
     requestAnimationFrame(()=>focusTarget(target))
   }
-  function firstTarget(){for(let i=0;i<2;i++){if(states[i].solved)continue;const s=states[i];for(let c=0;c<s.answerCount;c++)if(s.answerValues[c]==='')return{kind:'answer',i,c};for(let c=1;c<s.count;c++){const e=s.incoming[c]>0?String(s.incoming[c]):'';if(carryMethod==='top'&&e!==''&&s.carryValues[c]!==e)return{kind:'carry',i,c};if(carryMethod==='side'&&e!==''&&s.sideCarryValues[c]!==e)return{kind:'side',i,c}}}return null}
+  function firstTarget(){for(let i=0;i<2;i++){const target=firstTargetInCalc(i);if(target)return target}return null}
   function focusTarget(t){if(!t)return;t.kind==='answer'?focusAnswer(t.i,t.c):t.kind==='carry'?focusCarry(t.i,t.c):focusSide(t.i,t.c)}
   function verifyPair(){
     const ev=states.map((s,i)=>s.solved?{filled:true,correct:true}:evaluate(i));
@@ -4948,7 +4965,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
       if(st){st.textContent='';st.className='calc-status'}
     }
     active={kind:'answer',calc:i,col:0};
-    focusAnswer(i,0);
+    focusMulColumn(i,0);
     setFeedback(`Calcul ${i+1} effacé.`,'')
   }
   resetBtn.onclick=clearCurrentCalculation;
@@ -5082,25 +5099,30 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
     if(b)b.classList.toggle('waiting-for-first',!firstReady);
     updateScrollArrow()
   }
-  function updateInstruction(){instructionText.innerHTML=carryMethod==='top'?'<strong>Commence par les unités.</strong> Écris le chiffre du résultat, puis le report au-dessus du chiffre suivant lorsqu’il y en a un.':'<strong>Commence par les unités.</strong> Écris le chiffre du résultat, puis place le report dans la case à droite avant de continuer vers la gauche.'}
+  function updateInstruction(){if(tensFirst){instructionText.innerHTML=carryMethod==='top'?'<strong>Commence par les unités.</strong> Quand il y a un report, écris d’abord sa dizaine au-dessus, puis le chiffre des unités du résultat.':'<strong>Commence par les unités.</strong> Quand il y a un report, place d’abord la dizaine dans la case à droite, puis écris le chiffre des unités.'}else instructionText.innerHTML=carryMethod==='top'?'<strong>Commence par les unités.</strong> Écris le chiffre du résultat, puis le report au-dessus du chiffre suivant lorsqu’il y en a un.':'<strong>Commence par les unités.</strong> Écris le chiffre du résultat, puis place le report dans la case à droite avant de continuer vers la gauche.'}
   function updateBar(){sessionLevel.textContent=`Niveau ${session.level}`;sessionMode.textContent=session.mode==='training'?'🧭 Exercice guidé':session.mode==='sudden'?'⚡ Mort subite':'✕ Calculs';if(session.mode==='training'){sessionProgress.textContent=`Calcul ${session.completed+1}`;sessionScore.textContent='Sans points'}else if(session.mode==='classic'){const a=Math.min(session.completed+1,session.total),b=Math.min(session.completed+2,session.total);sessionProgress.textContent=`${a}${b>a?'–'+b:''} / ${session.total}`;sessionScore.textContent=`Score : ${session.score} / ${session.total}`}else{sessionProgress.textContent=`Calcul ${session.completed+1}`;sessionScore.textContent=`Score : ${session.score}`}sessionScore.classList.toggle('sun-score',!!session.allMultipliers);sessionScore.classList.toggle('tables-aid-active',!!session.tablesUsed)}
 
   // Tables de multiplication
-  for(let n=2;n<=9;n++){const o=document.createElement('option');o.value=String(n);o.textContent=`Table de ${n}`;tablePicker.appendChild(o)}tablePicker.value='2';
+  const tablePromptOption=document.createElement('option');
+  tablePromptOption.value='';tablePromptOption.textContent='Choisis ta table';tablePromptOption.disabled=true;tablePromptOption.selected=true;tablePicker.appendChild(tablePromptOption);
+  for(let n=2;n<=9;n++){const o=document.createElement('option');o.value=String(n);o.textContent=`Table de ${n}`;tablePicker.appendChild(o)}
   function renderTable(){
-    const n=+tablePicker.value;
-    tableList.innerHTML='';
-    for(let k=2;k<=9;k++){
+    const raw=tablePicker.value;tableList.innerHTML='';
+    if(!raw){
+      tableList.innerHTML='<div class="table-prompt"><div class="table-prompt-arrow" aria-hidden="true">↑</div><div>Choisis ta table</div></div>';
+      return
+    }
+    const n=+raw;
+    for(let k=1;k<=10;k++){
       const r=div('table-row');
-      r.innerHTML=`<span class="table-left"><span class="table-mult-a">${k}</span> × ${n}</span><span class="table-eq">=</span><span class="table-result">${k*n}</span>`;
+      r.innerHTML=`<span class="table-left"><span class="table-mult-a">${n}</span> × ${k}</span><span class="table-eq">=</span><span class="table-result">${n*k}</span>`;
       tableList.appendChild(r)
     }
   }
-  tablePicker.onchange=renderTable;
-  renderTable();
+  tablePicker.onchange=renderTable;renderTable();
   function hardTablesActive(){return !!hardSession&&!hardGame.classList.contains('hidden')}
   function syncTablesButtons(){tablesBtn.textContent=tablesOpen?'✖ Masquer les tables':'✖ Afficher les tables de multiplication';if(hardTablesBtn)hardTablesBtn.textContent=tablesOpen?'✖ Masquer les tables':'✖ Afficher les tables'}
-  function openTables(){const inHard=hardTablesActive();if(!inHard&&!session)return;tablesOpen=true;if(inHard){hardSession.tablesUsed=true;hardSessionScore?.classList.add('tables-aid-active');hardSessionScore.title='Aide utilisée : tables de multiplication affichées'}else{session.tablesUsed=true;updateBar()}tablesPanel.classList.remove('hidden');tablesPanel.setAttribute('aria-hidden','false');document.body.classList.add('tables-open');syncTablesButtons();requestAnimationFrame(updateScrollArrow)}
+  function openTables(){const inHard=hardTablesActive();if(!inHard&&!session)return;tablesOpen=true;tablePicker.value='';renderTable();if(inHard){hardSession.tablesUsed=true;hardSessionScore?.classList.add('tables-aid-active');hardSessionScore.title='Aide utilisée : tables de multiplication affichées'}else{session.tablesUsed=true;updateBar()}tablesPanel.classList.remove('hidden');tablesPanel.setAttribute('aria-hidden','false');document.body.classList.add('tables-open');syncTablesButtons();requestAnimationFrame(updateScrollArrow)}
   function closeTables(update=true){tablesOpen=false;tablesPanel.classList.add('hidden');tablesPanel.setAttribute('aria-hidden','true');document.body.classList.remove('tables-open');syncTablesButtons();if(update)requestAnimationFrame(updateScrollArrow)}
   tablesBtn.onclick=()=>tablesOpen?closeTables():openTables();
   if(hardTablesBtn)hardTablesBtn.onclick=()=>tablesOpen?closeTables():openTables();
@@ -5240,7 +5262,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
     hardMenu.classList.add('hidden');hardGame.classList.remove('hidden');document.body.classList.add('hard-mode-active');
     newHardCalc()
   }
-  function newHardCalc(){hardState=generateMultiplication(hardSession.digits,[2,3,4,5,6,7,8,9],false);hardPhase='answering';hardSession.currentFirstTry=true;hardActive={kind:'answer',col:0};renderHardCalc();hardPrimary.textContent='Valider';hardClear.disabled=false;setHardEnabled(true);updateHardHeader();setHardFeedback('Commence par les unités.');focusHard('answer',0)}
+  function newHardCalc(){hardState=generateMultiplication(hardSession.digits,[2,3,4,5,6,7,8,9],false);hardPhase='answering';hardSession.currentFirstTry=true;hardActive={kind:'answer',col:0};renderHardCalc();hardPrimary.textContent='Valider';hardClear.disabled=false;setHardEnabled(true);updateHardHeader();setHardFeedback('Commence par les unités.');focusHardMulColumn(0)}
   function updateHardHeader(){
     hardSessionTitle.textContent=`${APP_CFG.hard.title} · HARD LVL ${hardSession.level}`;
     const label=hardSession.mode==='training'?'🧠 Entraînement':hardSession.mode==='challenge'?'🎯 3 calculs':'⚡ Mort subite';
@@ -5262,6 +5284,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
   function hardInputFor(kind,col){if(kind==='side')return hardOperationCard.querySelector('.hard-side-carry');return hardOperationCard.querySelector(`input[data-kind="${kind}"][data-col="${col}"]`)}
   function setHardActive(inp,kind,col){hardOperationCard.querySelectorAll('.hard-active').forEach(x=>x.classList.remove('hard-active'));hardActive={kind,col};if(inp&&!inp.disabled){inp.classList.add('hard-active');inp.focus({preventScroll:true});inp.select()}}
   function focusHard(kind,col){requestAnimationFrame(()=>setHardActive(hardInputFor(kind,col),kind,col))}
+  function focusHardMulColumn(c){if(!hardState)return;if(tensFirst&&c<hardState.count-1&&hardState.outgoing[c]>0){const target=c+1;if(carryMethod==='top'&&hardState.carryValues[target]!==String(hardState.outgoing[c])){focusHard('carry',target);return}if(carryMethod==='side'&&hardState.sideCarryValues[target]!==String(hardState.outgoing[c])){focusHard('side',target);return}}focusHard('answer',c)}
   function markHardSideCarryUsed(c){
     if(c<1)return;
     const value=hardState.sideCarryValues[c];
@@ -5283,23 +5306,22 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
     if(kind==='answer'){
       inp.value=d;hardState.answerValues[col]=d;
       if(carryMethod==='side'&&col>=1)markHardSideCarryUsed(col);
-      if(col<hardState.count-1&&hardState.outgoing[col]>0){
-        carryMethod==='top'?focusHard('carry',col+1):focusHard('side',col+1)
-      }else if(col+1<hardState.answerCount)focusHard('answer',col+1)
+      if(!tensFirst&&col<hardState.count-1&&hardState.outgoing[col]>0){carryMethod==='top'?focusHard('carry',col+1):focusHard('side',col+1)}
+      else if(col+1<hardState.answerCount)focusHardMulColumn(col+1)
     }else if(kind==='carry'){
-      inp.value=d;hardState.carryValues[col]=d;focusHard('answer',col)
+      inp.value=d;hardState.carryValues[col]=d;tensFirst&&col>0?focusHard('answer',col-1):focusHard('answer',col)
     }else{
       const e=String(hardState.incoming[col]);inp.value=d;
       if(d===e){
         hardState.sideCarryValues[col]=d;inp.classList.remove('hard-bad');inp.classList.add('hard-good');
-        setTimeout(()=>focusHard('answer',col),90)
+        setTimeout(()=>tensFirst&&col>0?focusHard('answer',col-1):focusHard('answer',col),90)
       }else{
         inp.classList.add('hard-bad');
         setTimeout(()=>{inp.value='';inp.classList.remove('hard-bad');focusHard('side',col)},350)
       }
     }
   }
-  function hardMulEntrySequence(){const seq=[];for(let c=0;c<hardState.answerCount;c++){if(c>=1&&c<hardState.count&&hardState.incoming[c]>0)seq.push({kind:carryMethod==='top'?'carry':'side',col:c});seq.push({kind:'answer',col:c})}return seq}
+  function hardMulEntrySequence(){const seq=[];for(let c=0;c<hardState.answerCount;c++){if(tensFirst){if(c<hardState.count-1&&hardState.outgoing[c]>0)seq.push({kind:carryMethod==='top'?'carry':'side',col:c+1});seq.push({kind:'answer',col:c})}else{seq.push({kind:'answer',col:c});if(c<hardState.count-1&&hardState.outgoing[c]>0)seq.push({kind:carryMethod==='top'?'carry':'side',col:c+1})}}return seq}
   function hardMulEntryValue(t){return t.kind==='answer'?(hardState.answerValues[t.col]||''):t.kind==='carry'?(hardState.carryValues[t.col]||''):(hardState.sideCarryValues[t.col]||'')}
   function hardMulClearFocus(t){const inp=hardInputFor(t.kind,t.col);if(inp){inp.value='';inp.classList.remove('hard-bad','hard-good')}if(t.kind==='answer')hardState.answerValues[t.col]='';else if(t.kind==='carry')hardState.carryValues[t.col]='';else hardState.sideCarryValues[t.col]='';focusHard(t.kind,t.col)}
   function eraseHard(){
@@ -5313,7 +5335,7 @@ function enregistrerResultatMathas(score,total,niveau,niveauRang,aideTables=fals
     hardState.answerValues.fill('');hardState.carryValues.fill('');hardState.sideCarryValues.fill('');
     hardOperationCard.querySelectorAll('input').forEach(i=>{i.value='';i.classList.remove('hard-bad','hard-good')});
     hardOperationCard.querySelectorAll('.side-carry-used-list').forEach(x=>x.textContent='');
-    focusHard('answer',0)
+    focusHardMulColumn(0)
   };hardPrimary.onclick=hardPrimaryAction;
   function evalHard(){const exp=hardState.result.split('').reverse();let filled=true,correct=true;for(let c=0;c<hardState.answerCount;c++){if(hardState.answerValues[c]==='')filled=false;if(hardState.answerValues[c]!==exp[c])correct=false}for(let c=1;c<hardState.count;c++){const e=hardState.incoming[c]>0?String(hardState.incoming[c]):'';if(carryMethod==='top'){const a=(e===''&&hardState.carryValues[c]==='0')?'':hardState.carryValues[c];if(e!==''&&a==='')filled=false;if(a!==e)correct=false}else if(e!==''&&hardState.sideCarryValues[c]!==e){filled=false;correct=false}}return{filled,correct}}
   function markHardErrors(){const exp=hardState.result.split('').reverse();for(let c=0;c<hardState.answerCount;c++){const i=hardInputFor('answer',c);if(hardState.answerValues[c]!==exp[c]){i?.classList.add('hard-bad');if(i)i.value='';hardState.answerValues[c]=''}else i?.classList.add('hard-good')}if(carryMethod==='top'){for(let c=1;c<hardState.count;c++){const e=hardState.incoming[c]>0?String(hardState.incoming[c]):'',a=(e===''&&hardState.carryValues[c]==='0')?'':hardState.carryValues[c],i=hardInputFor('carry',c);if(a!==e){i?.classList.add('hard-bad');if(i)i.value='';hardState.carryValues[c]=''}else if(i?.value)i.classList.add('hard-good')}}}
@@ -6630,5 +6652,186 @@ body.light-mode .table-result{
   color:#a97922 !important;
 }
 </style>
+<style id="mathas-post-activity-v1">
+.mathas-post-activity-overlay{
+  position:fixed;inset:0;z-index:26000;display:grid;place-items:center;
+  padding:22px;background:rgba(3,8,18,.72);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+}
+.mathas-post-activity-card{
+  position:relative;width:min(760px,94vw);padding:30px 28px 28px;border-radius:28px;
+  border:1px solid rgba(148,184,215,.34);
+  background:linear-gradient(180deg,rgba(15,28,43,.98),rgba(8,18,32,.99));
+  box-shadow:0 28px 80px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.07);
+  color:#f4f9ff;text-align:center;
+}
+.mathas-post-activity-title{font-size:clamp(1.65rem,4vw,2.45rem);font-weight:1000;line-height:1.05;margin:4px 54px 7px}
+.mathas-post-activity-summary{min-height:25px;color:#b9cbdb;font-size:1rem;font-weight:850;margin-bottom:22px}
+.mathas-post-activity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.mathas-post-activity-btn{
+  min-height:82px;border-radius:18px;border:1px solid rgba(255,255,255,.16);padding:14px 16px;
+  color:#fff;font:inherit;font-size:1.05rem;font-weight:1000;line-height:1.18;cursor:pointer;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.16),0 6px 0 rgba(0,0,0,.25),0 10px 24px rgba(0,0,0,.18);
+  transition:transform .12s ease,filter .12s ease;
+}
+.mathas-post-activity-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.mathas-post-activity-btn:active{transform:translateY(4px);box-shadow:inset 0 2px 0 rgba(255,255,255,.12),0 2px 0 rgba(0,0,0,.24)}
+.mathas-post-activity-btn.restart{background:linear-gradient(180deg,#b67722,#7d4a12);border-color:#d69b45}
+.mathas-post-activity-btn.follow{background:linear-gradient(180deg,#176f92,#10506d);border-color:#3197bc}
+.mathas-post-activity-menu{
+  position:absolute;top:14px;right:14px;min-width:78px;height:42px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.075);color:#eaf4ff;
+  font:inherit;font-weight:900;cursor:pointer
+}
+.mathas-post-activity-menu:hover{background:rgba(255,255,255,.13)}
+body.light-mode .mathas-post-activity-overlay,body.light .mathas-post-activity-overlay{background:rgba(219,231,240,.68)}
+body.light-mode .mathas-post-activity-card,body.light .mathas-post-activity-card{background:linear-gradient(180deg,#fbfdff,#eef5fa);border-color:#b8cfdf;color:#173149;box-shadow:0 28px 70px rgba(44,72,92,.24)}
+body.light-mode .mathas-post-activity-summary,body.light .mathas-post-activity-summary{color:#587085}
+@media(max-width:620px){.mathas-post-activity-card{padding:68px 16px 18px}.mathas-post-activity-title{margin:0 0 7px}.mathas-post-activity-grid{grid-template-columns:1fr}.mathas-post-activity-btn{min-height:64px}}
+</style>
+<script id="mathas-post-activity-v1-script">
+(()=>{
+  const $=(s,r=document)=>r.querySelector(s);
+  const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  let current=null,autoTimer=null,endTimer=null,lastEndSignature='';
+  const norm=s=>(s||'').replace(/\s+/g,' ').trim();
+  const levelFromText=t=>{const m=norm(t).match(/(?:Niveau|LEVEL|LVL|Hard)\s*([123])/i);return m?+m[1]:null};
+  function optionForLevel(sel,level){return [...(sel?.options||[])].find(o=>new RegExp(`Niveau\\s*${level}\\b`,'i').test(o.textContent||''))||null}
+  function normalSelect(mode){
+    const ids=mode==='training'?['trainingLevel','trainingMaxDigits','levelSelect']:mode==='sudden'?['suddenLevel','suddenMaxDigits','levelSelect']:['classicLevel','classicMaxDigits','levelSelect'];
+    for(const id of ids){const s=document.getElementById(id);if(s&&optionForLevel(s,1))return s}return null
+  }
+  function currentNormalLevel(mode){
+    const s=normalSelect(mode);if(s){const o=s.options[s.selectedIndex];const n=levelFromText(o?.textContent);if(n)return n}
+    for(const e of $$('#gameScreen .session-bar *,#gameScreen [id*="Level"],#gameScreen [id*="level"]')){const n=levelFromText(e.textContent);if(n)return n}
+    return 1
+  }
+  function progression(){
+    try{const k=window.MathasAppConfig?.storage?.progression;if(!k)return{};return JSON.parse(localStorage.getItem(k)||'{}')||{}}catch{return{}}
+  }
+  function normalLevelOpen(level){if(level<=1)return true;if(level>3)return false;const p=progression();const k=`level${level}`;if(k in p)return !!p[k];const s=normalSelect('training'),o=optionForLevel(s,level);return o?!o.disabled:true}
+  function suddenOpen(level){
+    const p=progression(),k=`sudden${level}`;if(k in p)return !!p[k];
+    const s=normalSelect('sudden'),o=optionForLevel(s,level);if(o&&o.disabled)return false;
+    if(current?.zone==='normal'&&current.level===level){const b=findNormalButton('sudden');if(b?.disabled)return false}
+    return true
+  }
+  function setNormalLevel(level){
+    const changed=[];
+    $$('select').forEach(s=>{const o=optionForLevel(s,level);if(!o||o.disabled)return;s.value=o.value;changed.push(s)});
+    changed.forEach(s=>{s.dispatchEvent(new Event('change',{bubbles:true}));s._syncSlide?.()})
+  }
+  function findNormalButton(mode,count){
+    const root=$('#menuScreen')||document;
+    if(mode==='classic')return root.querySelector(`button[data-count="${count}"]`);
+    if(mode==='training')return $('#trainingBtn',root)||$$('button',root).find(b=>/exercice guid[ée]/i.test(b.textContent||''));
+    if(mode==='sudden')return $('#suddenBtn',root)||$('.sudden-btn',root)||$$('button',root).find(b=>/mort subite/i.test(b.textContent||''));
+    return null
+  }
+  function classifyNormal(b){
+    if(!b)return null;
+    if(b.dataset?.count)return{zone:'normal',mode:'classic',count:+b.dataset.count,level:currentNormalLevel('classic')};
+    const tx=norm(b.textContent);
+    if(b.id==='trainingBtn'||/exercice guid[ée]/i.test(tx))return{zone:'normal',mode:'training',level:currentNormalLevel('training')};
+    if(b.id==='suddenBtn'||b.classList.contains('sudden-btn')||/mort subite/i.test(tx))return{zone:'normal',mode:'sudden',level:currentNormalLevel('sudden')};
+    return null
+  }
+  function hardLevelFromButton(b){return +(b.dataset?.level||levelFromText(b.closest('.hard-level-card,.hard-card')?.querySelector('h3')?.textContent)||1)}
+  function classifyHard(b){
+    if(!b)return null;let mode=b.dataset?.mode||null;
+    if(!mode){if(b.classList.contains('hard-three'))mode='challenge';else if(b.classList.contains('hard-sudden'))mode='sudden';else if(b.classList.contains('hard-train'))mode='training'}
+    return mode?{zone:'hard',mode,level:hardLevelFromButton(b)}:null
+  }
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    const h=b.matches('.hard-start,.hard-three,.hard-sudden,.hard-train')||b.closest('#hardMenu,.hard-menu-screen,.hard-shell');
+    const d=h?classifyHard(b):classifyNormal(b);if(d&&!b.disabled)current=d
+  },true);
+  function hasCelebration(){return !!document.querySelector('.celebration-layer,.celebrate,.record-celebration,.finish-celebration')}
+  function afterCelebration(fn){
+    let waited=0;const tick=()=>{if(hasCelebration()&&waited<5000){waited+=120;setTimeout(tick,120)}else setTimeout(fn,hasCelebration()?250:180)};setTimeout(tick,80)
+  }
+  function clearAuto(){if(autoTimer){clearTimeout(autoTimer);autoTimer=null}}
+  function scheduleAuto(btn){
+    clearAuto();const snapshot=norm(btn.textContent);
+    autoTimer=setTimeout(()=>afterCelebration(()=>{
+      if(document.body.contains(btn)&&!btn.disabled&&norm(btn.textContent)===snapshot&&!document.querySelector('.mathas-post-activity-overlay'))btn.click()
+    }),80)
+  }
+  function hardThreeStore(){try{const k=window.MathasAppConfig?.storage?.hardThree;return k?JSON.parse(localStorage.getItem(k)||'{}')||{}:{}}catch{return{}}}
+  function hardThreeScore(level){const n=Number(hardThreeStore()[String(level)]);return Number.isFinite(n)?n:0}
+  function hardLevelOpen(level){return level===1||hardThreeScore(level-1)>=3||window.__masterMode===true}
+  function hardSuddenOpen(level){return hardLevelOpen(level)&&(hardThreeScore(level)>=3||window.__masterMode===true)}
+  function hardCard(level){return $$('.hard-level-card,.hard-card').find(c=>levelFromText(c.querySelector('h3')?.textContent)===level)||null}
+  function findHardButton(level,mode){const c=hardCard(level);if(!c)return null;if(mode==='challenge')return $('.hard-three',c)||$('.hard-start[data-mode="challenge"]',c);if(mode==='sudden')return $('.hard-sudden',c)||$('.hard-start[data-mode="sudden"]',c);return $('.hard-train',c)||$('.hard-start[data-mode="training"]',c)}
+  function closeOverlay(){document.querySelector('.mathas-post-activity-overlay')?.remove()}
+  function goNormalMenu(cb){
+    closeOverlay();const m=$('#menuBtn');const p=$('#primaryBtn');
+    if(m&&!m.disabled)m.click();else if(p&&/retour.*menu/i.test(p.textContent||''))p.click();
+    setTimeout(cb,180)
+  }
+  function goHardMenu(cb){
+    closeOverlay();const p=$('#hardPrimary');
+    if(p&&/retour.*menu/i.test(p.textContent||''))p.click();else{const b=$('#hardGameBack,#hardExit');b?.click()}
+    setTimeout(cb,180)
+  }
+  function launchNormal(a){goNormalMenu(()=>{setNormalLevel(a.level);setTimeout(()=>{const b=findNormalButton(a.mode,a.count);if(b&&!b.disabled)b.click()},80)})}
+  function launchHard(a){goHardMenu(()=>{const b=findHardButton(a.level,a.mode);if(b&&!b.disabled)b.click()})}
+  function menuFromOverlay(){
+    const wasHard=current?.zone==='hard';closeOverlay();
+    if(wasHard){const p=$('#hardPrimary');if(p&&/retour.*menu/i.test(p.textContent||'')){p.click();setTimeout(()=>{$('#hardMenuBack,#hardBack,.hard-back')?.click()},120)}else $('#hardGameBack,#hardExit')?.click()}
+    else{const m=$('#menuBtn');if(m)m.click();else $('#primaryBtn')?.click()}
+  }
+  function normalCandidates(d){
+    const n=d.level||1,c=[];
+    const add=(label,a,ok=true)=>{if(ok&&!c.some(x=>x.label===label))c.push({label,a})};
+    if(n<3&&normalLevelOpen(n+1))add(`Niveau ${n+1}`,{...d,level:n+1});
+    if(d.mode==='classic'&&d.count===4)add('Passer à 10 calculs',{zone:'normal',mode:'classic',count:10,level:n});
+    else if(d.mode==='classic'&&d.count===10)add('Passer à 20 calculs',{zone:'normal',mode:'classic',count:20,level:n});
+    else if(d.mode==='training')add('Faire 10 calculs',{zone:'normal',mode:'classic',count:10,level:n});
+    else if(d.mode==='sudden')add('Faire 10 calculs',{zone:'normal',mode:'classic',count:10,level:n});
+    else add('Exercice guidé',{zone:'normal',mode:'training',level:n});
+    if(d.mode!=='sudden')add('Mort subite',{zone:'normal',mode:'sudden',level:n},suddenOpen(n));
+    if(d.mode!=='training')add('Exercice guidé',{zone:'normal',mode:'training',level:n});
+    if(!(d.mode==='classic'&&d.count===20))add('Faire 20 calculs',{zone:'normal',mode:'classic',count:20,level:n});
+    if(!(d.mode==='classic'&&d.count===10))add('Faire 10 calculs',{zone:'normal',mode:'classic',count:10,level:n});
+    return c.slice(0,3)
+  }
+  function hardCandidates(d){
+    const n=d.level||1,c=[];const add=(label,a,ok=true)=>{if(ok&&!c.some(x=>x.label===label))c.push({label,a})};
+    if(n<3)add(`HARD niveau ${n+1}`,{zone:'hard',mode:'challenge',level:n+1},hardLevelOpen(n+1));
+    if(d.mode!=='sudden')add('Mort subite HARD',{zone:'hard',mode:'sudden',level:n},hardSuddenOpen(n));
+    if(d.mode!=='challenge')add('3 calculs HARD',{zone:'hard',mode:'challenge',level:n},hardLevelOpen(n));
+    if(d.mode!=='training')add('Entraînement HARD',{zone:'hard',mode:'training',level:n},hardLevelOpen(n));
+    if(n>1)add(`HARD niveau ${n-1}`,{zone:'hard',mode:'challenge',level:n-1},hardLevelOpen(n-1));
+    if(d.mode==='challenge')add('3 calculs HARD',{zone:'hard',mode:'challenge',level:n},hardLevelOpen(n));
+    return c.slice(0,3)
+  }
+  function summaryText(zone){
+    const sels=zone==='hard'?['#hardSessionScore','#hardScore','.hard-session-score']:['#sessionScore','#scorePill','.score-pill'];
+    for(const s of sels){const e=$(s);if(e&&norm(e.textContent))return norm(e.textContent)}return''
+  }
+  function showEndOverlay(zone){
+    if(!current||current.zone!==zone||document.querySelector('.mathas-post-activity-overlay'))return;
+    const sig=JSON.stringify(current)+'|'+summaryText(zone);if(sig===lastEndSignature)return;lastEndSignature=sig;
+    const follow=zone==='hard'?hardCandidates(current):normalCandidates(current);
+    while(follow.length<3){
+      const fallback=zone==='hard'?{label:'Entraînement HARD',a:{zone:'hard',mode:'training',level:current.level||1}}:{label:'Exercice guidé',a:{zone:'normal',mode:'training',level:current.level||1}};
+      if(!follow.some(x=>x.label===fallback.label))follow.push(fallback);else break
+    }
+    const ov=document.createElement('div');ov.className='mathas-post-activity-overlay';
+    const card=document.createElement('div');card.className='mathas-post-activity-card';
+    const menu=document.createElement('button');menu.className='mathas-post-activity-menu';menu.textContent='Menu';menu.onclick=menuFromOverlay;
+    const title=document.createElement('div');title.className='mathas-post-activity-title';title.textContent='Activité terminée !';
+    const sum=document.createElement('div');sum.className='mathas-post-activity-summary';sum.textContent=summaryText(zone);
+    const grid=document.createElement('div');grid.className='mathas-post-activity-grid';
+    const again=document.createElement('button');again.className='mathas-post-activity-btn restart';again.textContent=zone==='hard'&&current.mode==='sudden'?'Recommencer la Mort subite':'Recommencer';again.onclick=()=>zone==='hard'?launchHard({...current}):launchNormal({...current});grid.appendChild(again);
+    follow.slice(0,3).forEach(x=>{const b=document.createElement('button');b.className='mathas-post-activity-btn follow';b.textContent=x.label;b.onclick=()=>x.a.zone==='hard'?launchHard(x.a):launchNormal(x.a);grid.appendChild(b)});
+    card.append(menu,title,sum,grid);ov.appendChild(card);document.body.appendChild(ov)
+  }
+  function observePrimary(btn,zone){if(!btn)return;const react=()=>{const t=norm(btn.textContent);if(/retour.*menu/i.test(t)){clearAuto();if(endTimer)clearTimeout(endTimer);endTimer=setTimeout(()=>afterCelebration(()=>showEndOverlay(zone)),100)}else if(/calculs? suivants?|nouveaux calculs|passer aux? .*calculs?|calcul suivant/i.test(t)){scheduleAuto(btn)}};new MutationObserver(react).observe(btn,{childList:true,subtree:true,characterData:true});react()}
+  observePrimary($('#primaryBtn'),'normal');observePrimary($('#hardPrimary'),'hard');
+})();
+</script>
+
 </body>
 </html>
