@@ -255,7 +255,11 @@ iframe{display:block;flex:1 1 auto;width:100%;height:auto;min-height:0;border:0;
      'déverrouillage de l’essai');
    // Le moteur Multiplication gère son propre bouton soudain : ne pas copier les
    // réécritures de texte ni le sélecteur suddenMaxDigits d'Addition simple.
-      frame.srcdoc=game;
+      game=swap(game,
+     "function refreshSuddenLock(p=loadProgression()){",
+     "function refreshSuddenLock(p=loadProgression()){if(window.__mathasThreeLivesDemo)return;",
+     "préserver les deux boutons du prototype contre la réécriture tardive");
+   frame.srcdoc=game;
    status.remove();
  }catch(error){
    frame.hidden=true;
